@@ -1,8 +1,11 @@
 import React, {ChangeEvent} from "react";
-import {FilterValuesType} from "../App";
-import style from "./Todolist.module.scss"
-import {AddItemForm} from "../AddItemForm";
-import {EditableSpan} from "../EditableSpan";
+import {FilterValuesType} from "../../App";
+import style from "./Todolist.module.css"
+import {AddItemForm} from "../AddItemForm/AddItemForm";
+import {EditableSpan} from "../EditableSpan/EditableSpan";
+import {Button, Checkbox, IconButton} from "@material-ui/core";
+import {Delete} from "@material-ui/icons";
+
 
 export type TaskType = {
     id: string
@@ -50,11 +53,13 @@ export function Todolist({
 
     return <div className={style.TodoList}>
         <div>
-            <h3><EditableSpan title={title} onChange={onChangeTodoListTitleHandler}/></h3>
-            <button onClick={removeTodolist}>x</button>
+            <b><EditableSpan title={title} onChange={onChangeTodoListTitleHandler}/></b>
+            <IconButton aria-label="delete" onClick={removeTodolist}>
+                <Delete/>
+            </IconButton>
         </div>
         <AddItemForm addItem={AddTask}/>
-        <ul>
+        <div>
             {tasks.map(item => {
                 const onRemoveHandler = () => {
                     removeTask(item.id, props.id)
@@ -65,26 +70,30 @@ export function Todolist({
                 const onChangeTitleHandler = (newValue: string) => {
                     props.changeTaskTitle(item.id, newValue, props.id)
                 }
-                return <li key={item.id + item.title} className={item.isDone ? style.isDone : ""}>
-                    <input type="checkbox"
-                           checked={item.isDone}
-                           onChange={onChangeHandler}
+                return <div key={item.id + item.title} className={item.isDone ? style.isDone : ""}>
+                    <Checkbox
+                        checked={item.isDone}
+                        onChange={onChangeHandler}
                     />
                     <EditableSpan title={item.title} onChange={onChangeTitleHandler}/>
-                    <button onClick={onRemoveHandler}>x</button>
-                </li>
+                    <IconButton onClick={onRemoveHandler} aria-label="delete" size={"small"}>
+                        <Delete/>
+                    </IconButton>
+                </div>
             })}
-        </ul>
+        </div>
         <div>
-            <button className={filter === "all" ? style.activeFilter : ""}
+            <Button variant={filter === "all" ? "contained" : "text"}
                     onClick={onAllClickHandler}>All
-            </button>
-            <button className={filter === "active" ? style.activeFilter : ""}
+            </Button>
+            <Button variant={filter === "active" ? "contained" : "text"}
+                    color={"primary"}
                     onClick={onActiveClickHandler}>Active
-            </button>
-            <button className={filter === "completed" ? style.activeFilter : ""}
+            </Button>
+            <Button variant={filter === "completed" ? "contained" : "text"}
+                    color={"secondary"}
                     onClick={onCompletedClickHandler}>Completed
-            </button>
+            </Button>
         </div>
     </div>
 }
