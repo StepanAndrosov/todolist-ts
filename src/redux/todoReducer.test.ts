@@ -6,7 +6,7 @@ import {
     todoReducer
 } from "./todoReducer";
 import {v1} from "uuid";
-import {FilterValuesType, TodoListType} from "../App";
+import {FilterValuesType, TodoListType} from "../AppWithRedux";
 
 test("remove todolist should be work", () => {
     const todolistId1 = v1()
@@ -24,16 +24,16 @@ test("remove todolist should be work", () => {
 test("add todolist should be work not immutability", () => {
     const todolistId1 = v1()
     const todolistId2 = v1()
-    const newTitle = "what to read?"
     const startState: Array<TodoListType> = [
         {id: todolistId1, title: "what to learn?", filter: "all"},
         {id: todolistId2, title: "what to buy?", filter: "all"}
     ]
+    const newTitle = "what to read?"
     const endState = todoReducer(startState, addTodoListAC(newTitle))
 
     expect(endState.length).toBe(3)
-    expect(endState[2].title).toBe(newTitle)
-    expect(endState[2].filter).toBe("all")
+    expect(endState[0].title).toBe(newTitle)
+    expect(endState[0].filter).toBe("all")
     expect(startState.length).toBe(2)
 })
 test("change title todolist should be work", () => {
