@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, { useCallback} from "react";
 import {FilterValuesType} from "../../AppWithRedux";
 import style from "./Todolist.module.css"
 import {AddItemForm} from "../AddItemForm/AddItemForm";
@@ -48,6 +48,7 @@ export const Todolist = React.memo(({title, changeFilter, filter, ...props}: Pro
         props.changeTodoListTitle(props.id, newTitle)
     }, [props])
 
+
     let taskForToDoList: Array<TaskType> = tasks
     switch (filter) {
         case "completed":
@@ -67,7 +68,15 @@ export const Todolist = React.memo(({title, changeFilter, filter, ...props}: Pro
         </div>
         <AddItemForm addItem={addTask}/>
         <div>
-            {taskForToDoList.map(t => <Task key={t.id} task={t} todolistId={props.id}/>)}
+            {taskForToDoList.map(t => {
+
+
+                return <Task
+                    key={t.id}
+                    task={t}
+                    todolistId={props.id}
+                />
+            })}
         </div>
         <div>
             <Button variant={filter === "all" ? "contained" : "text"}

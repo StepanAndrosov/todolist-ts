@@ -11,28 +11,31 @@ type TaskPropsType = {
     task: TaskType
     todolistId: string
 }
-export const Task = React.memo((props: TaskPropsType) => {
+export const Task = React.memo(({task, todolistId}: TaskPropsType) => {
 
     const dispatch = useDispatch()
 
     const onRemoveHandler = useCallback(() => {
-        dispatch(removeTaskAC(props.task.id, props.todolistId))
-    },[dispatch, props.task.id, props.todolistId])
+        dispatch(removeTaskAC(task.id, todolistId))
+    }, [dispatch, task.id, todolistId])
 
-    const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(changeTaskStatusAC(props.task.id, props.todolistId, e.currentTarget.checked))
-    },[dispatch, props.task.id, props.todolistId])
+    const onChangeHandler = useCallback((checked: boolean) => {
+        dispatch(changeTaskStatusAC(task.id,  todolistId, checked))
+    }, [dispatch, task.id, todolistId])
 
     const onChangeTitleHandler = useCallback((title: string) => {
-        dispatch(changeTaskTitleAC(props.task.id, props.todolistId, title))
-    },[dispatch, props.task.id, props.todolistId])
+        dispatch(changeTaskTitleAC(task.id, todolistId, title))
+    }, [dispatch, task.id, todolistId])
 
-    return <div key={props.task.id + props.task.title} className={props.task.isDone ? style.isDone : ""}>
+    const onChecked = (e: ChangeEvent<HTMLInputElement>) => {
+        onChangeHandler(e.currentTarget.checked)
+    }
+    return <div key={task.id + task.title} className={task.isDone ? style.isDone : ""}>
         <Checkbox
-            checked={props.task.isDone}
-            onChange={onChangeHandler}
+            checked={task.isDone}
+            onChange={onChecked}
         />
-        <EditableSpan title={props.task.title} onChange={onChangeTitleHandler}/>
+        <EditableSpan title={task.title} onChange={onChangeTitleHandler}/>
         <IconButton onClick={onRemoveHandler} aria-label="delete" size={"small"}>
             <Delete/>
         </IconButton>
