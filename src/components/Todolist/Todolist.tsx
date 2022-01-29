@@ -1,5 +1,4 @@
-import React, { useCallback} from "react";
-import {FilterValuesType} from "../../AppWithRedux";
+import React, {useCallback} from "react";
 import style from "./Todolist.module.css"
 import {AddItemForm} from "../AddItemForm/AddItemForm";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
@@ -9,13 +8,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppRootState} from "../../redux/store";
 import {addTaskAC} from "../../redux/tasksReducer";
 import {Task} from "./Task";
+import {FilterValuesType} from "../../redux/todoReducer";
+import {TaskStatuses, TaskType} from "../../api/todolistsAPI";
 
 
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
 type PropsTodoListType = {
     id: string
     title: string
@@ -52,10 +48,10 @@ export const Todolist = React.memo(({title, changeFilter, filter, ...props}: Pro
     let taskForToDoList: Array<TaskType> = tasks
     switch (filter) {
         case "completed":
-            taskForToDoList = tasks.filter((t => t.isDone))
+            taskForToDoList = tasks.filter(t => t.status === TaskStatuses.Completed)
             break
         case "active":
-            taskForToDoList = tasks.filter((t => !t.isDone))
+            taskForToDoList = tasks.filter(t => t.status === TaskStatuses.New)
             break
     }
 
@@ -69,8 +65,6 @@ export const Todolist = React.memo(({title, changeFilter, filter, ...props}: Pro
         <AddItemForm addItem={addTask}/>
         <div>
             {taskForToDoList.map(t => {
-
-
                 return <Task
                     key={t.id}
                     task={t}
@@ -78,17 +72,26 @@ export const Todolist = React.memo(({title, changeFilter, filter, ...props}: Pro
                 />
             })}
         </div>
-        <div>
+        <div style={{marginTop: '15px'}}>
             <Button variant={filter === "all" ? "contained" : "text"}
-                    onClick={onAllClickHandler}>All
+                    onClick={onAllClickHandler}
+                    size={"small"}
+            >
+                All
             </Button>
             <Button variant={filter === "active" ? "contained" : "text"}
                     color={"primary"}
-                    onClick={onActiveClickHandler}>Active
+                    onClick={onActiveClickHandler}
+                    size={"small"}
+            >
+                Active
             </Button>
             <Button variant={filter === "completed" ? "contained" : "text"}
                     color={"secondary"}
-                    onClick={onCompletedClickHandler}>Completed
+                    onClick={onCompletedClickHandler}
+                    size={"small"}
+            >
+                Completed
             </Button>
         </div>
     </div>

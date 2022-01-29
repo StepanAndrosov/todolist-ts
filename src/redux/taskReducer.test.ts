@@ -1,27 +1,87 @@
-import { TaskStateType} from "../AppWithRedux";
-import {
-    addTaskAC,
-    changeTaskStatusAC,
-    changeTaskTitleAC,
-    removeTaskAC,
-    tasksReducer
-} from "./tasksReducer";
+import {TaskStateType} from "../App";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./tasksReducer";
 import {addTodoListAC, removeTodolistAC} from "./todoReducer";
+import {TaskPriorities, TaskStatuses} from "../api/todolistsAPI";
+
+const startState: TaskStateType = {
+    "todolistId1": [
+        {
+            id: '1',
+            title: "HTML&CSS",
+            status: TaskStatuses.Completed,
+            priority: TaskPriorities.Low,
+            startDate: '',
+            description: '',
+            deadline: '',
+            todoListId: "todolistId1",
+            order: 0,
+            addedDate: ""
+        },
+        {
+            id: '2', title: "JS",
+            status: TaskStatuses.Completed,
+            priority: TaskPriorities.Low,
+            startDate: '',
+            description: '',
+            deadline: '',
+            todoListId: "todolistId1",
+            order: 0,
+            addedDate: ""},
+        {
+            id: '3', title: "ReactJS",
+            status: TaskStatuses.New,
+            priority: TaskPriorities.Low,
+            startDate: '',
+            description: '',
+            deadline: '',
+            todoListId: "todolistId1",
+            order: 0,
+            addedDate: ""},
+        {
+            id: '4', title: "Redux",
+            status: TaskStatuses.New,
+            priority: TaskPriorities.Low,
+            startDate: '',
+            description: '',
+            deadline: '',
+            todoListId: "todolistId1",
+            order: 0,
+            addedDate: ""}
+    ],
+    "todolistId2": [
+        {
+            id: '1', title: "Book",
+            status: TaskStatuses.New,
+            priority: TaskPriorities.Low,
+            startDate: '',
+            description: '',
+            deadline: '',
+            todoListId: "todolistId1",
+            order: 0,
+            addedDate: ""},
+        {
+            id: '2', title: "Milk",
+            status: TaskStatuses.New,
+            priority: TaskPriorities.Low,
+            startDate: '',
+            description: '',
+            deadline: '',
+            todoListId: "todolistId1",
+            order: 0,
+            addedDate: ""},
+        {id: '3', title: "Eggs",
+            status: TaskStatuses.New,
+            priority: TaskPriorities.Low,
+            startDate: '',
+            description: '',
+            deadline: '',
+            todoListId: "todolistId1",
+            order: 0,
+            addedDate: ""},
+    ]
+}
 
 test("correct task should be deleted from correct array", () => {
-    const startState: TaskStateType = {
-        "todolistId1": [
-            {id: '1', title: "HTML&CSS", isDone: true},
-            {id: '2', title: "JS", isDone: true},
-            {id: '3', title: "ReactJS", isDone: false},
-            {id: '4', title: "Redux", isDone: false}
-        ],
-        "todolistId2": [
-            {id: '1', title: "Book", isDone: false},
-            {id: '2', title: "Milk", isDone: false},
-            {id: '3', title: "Eggs", isDone: false},
-        ]
-    }
     const removeId = "1"
     const todoListId = "todolistId1"
     const action = removeTaskAC(removeId, todoListId)
@@ -33,19 +93,7 @@ test("correct task should be deleted from correct array", () => {
 })
 
 test("add task should be work not immutability", () => {
-    const startState: TaskStateType = {
-        "todolistId1": [
-            {id: '1', title: "HTML&CSS", isDone: true},
-            {id: '2', title: "JS", isDone: true},
-            {id: '3', title: "ReactJS", isDone: false},
-            {id: '4', title: "Redux", isDone: false}
-        ],
-        "todolistId2": [
-            {id: '1', title: "Book", isDone: false},
-            {id: '2', title: "Milk", isDone: false},
-            {id: '3', title: "Eggs", isDone: false},
-        ]
-    }
+
     const newTitle = "Vue & NuxtJS"
     const todoListId = "todolistId1"
     const action = addTaskAC(newTitle, todoListId)
@@ -54,49 +102,25 @@ test("add task should be work not immutability", () => {
     expect(endState[todoListId].length).toBe(5)
     expect(endState[todoListId][0].title).toBe(newTitle)
     expect(endState[todoListId][0].id).toBeDefined()
-    expect(endState[todoListId][0].isDone).toBe(false)
+    expect(endState[todoListId][0].status).toBe(TaskStatuses.New)
     expect(startState["todolistId2"].length).toBe(3)
 })
 
 
 test("change task status todolist should be work", () => {
-    const startState: TaskStateType = {
-        "todolistId1": [
-            {id: '1', title: "HTML&CSS", isDone: true},
-            {id: '2', title: "JS", isDone: true},
-            {id: '3', title: "ReactJS", isDone: false},
-            {id: '4', title: "Redux", isDone: false}
-        ],
-        "todolistId2": [
-            {id: '1', title: "Book", isDone: false},
-            {id: '2', title: "Milk", isDone: false},
-            {id: '3', title: "Eggs", isDone: false},
-        ]
-    }
+
     const changeStatusTaskId = "3"
     const todoListId = "todolistId1"
-    const action = changeTaskStatusAC(changeStatusTaskId, todoListId, true)
+    const action = changeTaskStatusAC(changeStatusTaskId, todoListId, TaskStatuses.Completed)
     const endState = tasksReducer(startState, action)
 
-    expect(endState[todoListId][2].isDone).toBeTruthy()
-    expect(endState["todolistId2"][2].isDone).toBeFalsy()
+    expect(endState[todoListId][2].status).toBe(TaskStatuses.Completed)
+    expect(endState["todolistId2"][2].status).toBe(TaskStatuses.New)
 })
 
 
 test("change task title should be work", () => {
-    const startState: TaskStateType = {
-        "todolistId1": [
-            {id: '1', title: "HTML&CSS", isDone: true},
-            {id: '2', title: "JS", isDone: true},
-            {id: '3', title: "ReactJS", isDone: false},
-            {id: '4', title: "Redux", isDone: false}
-        ],
-        "todolistId2": [
-            {id: '1', title: "Book", isDone: false},
-            {id: '2', title: "Milk", isDone: false},
-            {id: '3', title: "Eggs", isDone: false},
-        ]
-    }
+
     const changeTitleTaskId = "3"
     const todoListId = "todolistId1"
     const newTitle = "React, Vue, NextJS, NuxtJS"
@@ -110,19 +134,6 @@ test("change task title should be work", () => {
 })
 
 test("new property with new array should be added when todolist is added", () => {
-    const startState: TaskStateType = {
-        "todolistId1": [
-            {id: '1', title: "HTML&CSS", isDone: true},
-            {id: '2', title: "JS", isDone: true},
-            {id: '3', title: "ReactJS", isDone: false},
-            {id: '4', title: "Redux", isDone: false}
-        ],
-        "todolistId2": [
-            {id: '1', title: "Book", isDone: false},
-            {id: '2', title: "Milk", isDone: false},
-            {id: '3', title: "Eggs", isDone: false},
-        ]
-    }
 
     const action = addTodoListAC("new todolist")
     const endState = tasksReducer(startState, action)
@@ -136,24 +147,9 @@ test("new property with new array should be added when todolist is added", () =>
     expect(endState[newKey]).toEqual([])
 })
 test("remove todolist should be delete", () => {
-
-    const startState: TaskStateType = {
-        "todolistId1": [
-            {id: '1', title: "HTML&CSS", isDone: true},
-            {id: '2', title: "JS", isDone: true},
-            {id: '3', title: "ReactJS", isDone: false},
-            {id: '4', title: "Redux", isDone: false}
-        ],
-        "todolistId2": [
-            {id: '1', title: "Book", isDone: false},
-            {id: '2', title: "Milk", isDone: false},
-            {id: '3', title: "Eggs", isDone: false},
-        ]
-    }
     const todolistId = "todolistId2"
     const action = removeTodolistAC(todolistId)
     const endState = tasksReducer(startState, action)
-
     expect(endState[todolistId]).toBeUndefined()
     expect(endState["todolistId1"]).toBe(startState["todolistId1"])
 })

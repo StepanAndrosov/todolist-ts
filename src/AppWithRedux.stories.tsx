@@ -1,19 +1,19 @@
 import React from 'react';
-import {AppWithRedux} from "./AppWithRedux";
+import {App} from "./App";
 import {ReduxStoreDecorator} from "./stories/decorators/ReduxStoreDecorator";
 import {Meta} from "@storybook/react";
 
 
 export default {
-    title: "Todolist/AppWithRedux",
-    component: AppWithRedux,
+    title: "Todolist/App",
+    component: App,
     decorators: [ReduxStoreDecorator]
 } as Meta
 
 
 
 export const AppWithReduxStories = () => {
-    return <AppWithRedux/>
+    return <App />
 }
 
 

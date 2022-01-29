@@ -1,19 +1,19 @@
 import {
     addTodoListAC,
     changeTodoListFilterAC,
-    changeTodoListTitleAC,
-    removeTodolistAC,
+    changeTodoListTitleAC, FilterValuesType,
+    removeTodolistAC, TodolistDomainType,
     todoReducer
 } from "./todoReducer";
 import {v1} from "uuid";
-import {FilterValuesType, TodoListType} from "../AppWithRedux";
+
 
 test("remove todolist should be work", () => {
     const todolistId1 = v1()
     const todolistId2 = v1()
-    const startState: Array<TodoListType> = [
-        {id: todolistId1, title: "what to learn", filter: "all"},
-        {id: todolistId2, title: "what to buy", filter: "all"}
+    const startState: Array<TodolistDomainType> = [
+        {id: todolistId1, title: "what to learn", filter: "all", addedDate: '', order: 0},
+        {id: todolistId2, title: "what to buy", filter: "all", addedDate: '', order: 0}
     ]
 
     const endState = todoReducer(startState, removeTodolistAC(todolistId1))
@@ -24,9 +24,9 @@ test("remove todolist should be work", () => {
 test("add todolist should be work not immutability", () => {
     const todolistId1 = v1()
     const todolistId2 = v1()
-    const startState: Array<TodoListType> = [
-        {id: todolistId1, title: "what to learn?", filter: "all"},
-        {id: todolistId2, title: "what to buy?", filter: "all"}
+    const startState: Array<TodolistDomainType> = [
+        {id: todolistId1, title: "what to learn?", filter: "all", addedDate: '', order: 0},
+        {id: todolistId2, title: "what to buy?", filter: "all", addedDate: '', order: 0}
     ]
     const newTitle = "what to read?"
     const endState = todoReducer(startState, addTodoListAC(newTitle))
@@ -40,9 +40,9 @@ test("change title todolist should be work", () => {
     const todolistId1 = v1()
     const todolistId2 = v1()
     const newTitle = "what to read?"
-    const startState: Array<TodoListType> = [
-        {id: todolistId1, title: "what to learn?", filter: "all"},
-        {id: todolistId2, title: "what to buy?", filter: "all"}
+    const startState: Array<TodolistDomainType> = [
+        {id: todolistId1, title: "what to learn?", filter: "all", addedDate: '', order: 0},
+        {id: todolistId2, title: "what to buy?", filter: "all", addedDate: '', order: 0}
     ]
     const endState = todoReducer(startState, changeTodoListTitleAC(todolistId2, newTitle))
 
@@ -56,9 +56,9 @@ test("change todolist filter should be work", () => {
     const todolistId1 = v1()
     const todolistId2 = v1()
     const newFilter: FilterValuesType = "active"
-    const startState: Array<TodoListType> = [
-        {id: todolistId1, title: "what to learn?", filter: "all"},
-        {id: todolistId2, title: "what to buy?", filter: "all"}
+    const startState: Array<TodolistDomainType> = [
+        {id: todolistId1, title: "what to learn?", filter: "all", addedDate: '', order: 0},
+        {id: todolistId2, title: "what to buy?", filter: "all", addedDate: '', order: 0}
     ]
     const endState = todoReducer(startState, changeTodoListFilterAC(todolistId2, newFilter))
 

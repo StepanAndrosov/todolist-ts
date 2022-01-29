@@ -5,7 +5,8 @@ import style from "./Todolist.module.css";
 import {Checkbox, IconButton} from "@material-ui/core";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
 import {Delete} from "@material-ui/icons";
-import {TaskType} from "./Todolist";
+import {TaskStatuses, TaskType} from "../../api/todolistsAPI";
+
 
 type TaskPropsType = {
     task: TaskType
@@ -20,7 +21,7 @@ export const Task = React.memo(({task, todolistId}: TaskPropsType) => {
     }, [dispatch, task.id, todolistId])
 
     const onChangeHandler = useCallback((checked: boolean) => {
-        dispatch(changeTaskStatusAC(task.id,  todolistId, checked))
+        dispatch(changeTaskStatusAC(task.id, todolistId, checked ? TaskStatuses.Completed : TaskStatuses.New))
     }, [dispatch, task.id, todolistId])
 
     const onChangeTitleHandler = useCallback((title: string) => {
@@ -30,14 +31,16 @@ export const Task = React.memo(({task, todolistId}: TaskPropsType) => {
     const onChecked = (e: ChangeEvent<HTMLInputElement>) => {
         onChangeHandler(e.currentTarget.checked)
     }
-    return <div key={task.id + task.title} className={task.isDone ? style.isDone : ""}>
-        <Checkbox
-            checked={task.isDone}
-            onChange={onChecked}
-        />
-        <EditableSpan title={task.title} onChange={onChangeTitleHandler}/>
-        <IconButton onClick={onRemoveHandler} aria-label="delete" size={"small"}>
-            <Delete/>
-        </IconButton>
-    </div>
+    return (
+        <div key={task.id + task.title} className={task.status === TaskStatuses.Completed ? style.isDone : ""}>
+            <Checkbox
+                checked={task.status === TaskStatuses.Completed}
+                onChange={onChecked}
+            />
+            <EditableSpan title={task.title} onChange={onChangeTitleHandler}/>
+            <IconButton onClick={onRemoveHandler} aria-label="delete" size={"small"}>
+                <Delete/>
+            </IconButton>
+        </div>
+    )
 })
