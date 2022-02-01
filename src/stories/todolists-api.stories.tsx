@@ -109,7 +109,7 @@ export const CreateTask = () => {
     const [todoId, setTodoId] = useState<string>('')
     const [title, setTitle] = useState<string>('')
     const onCreateTask = () => {
-        todolistsAPI.createTasks(todoId, title)
+        todolistsAPI.createTask(todoId, title)
             .then(res => setState(res.data))
         setTodoId('')
         setTitle('')
@@ -127,6 +127,7 @@ export const CreateTask = () => {
     </div>
 }
 export const UpdateTask = () => {
+
     const [state, setState] = useState<any>(null)
     const [todoId, setTodoId] = useState<string>('')
     const [taskId, setTaskId] = useState<string>('')
@@ -143,6 +144,7 @@ export const UpdateTask = () => {
     }
 
     const onUpdateTask = () => {
+        console.log(item)
         todolistsAPI.updateTask(todoId, taskId, item)
             .then(res => setState(res.data))
         setTodoId('')

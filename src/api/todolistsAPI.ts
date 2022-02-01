@@ -14,13 +14,11 @@ export type TodolistType = {
     addedDate: string
     order: number
 }
-
 type ResponseType<D = {}> = {
     resultCode: number
     messages: Array<string>,
     data: D
 }
-
 export enum TaskStatuses {
     New = 0,
     InProgress = 1,
@@ -34,7 +32,6 @@ export enum TaskPriorities {
     Urgently = 3,
     Later = 4
 }
-
 export type TaskType = {
     description: string
     title: string
@@ -48,8 +45,8 @@ export type TaskType = {
     addedDate: string
 }
 export type TaskModelType = {
-    description: string
     title: string
+    description: string
     status: number
     priority: number
     startDate: string
@@ -77,13 +74,13 @@ export const todolistsAPI = {
     getTasks(todolistId: string) {
         return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`)
     },
-    createTasks(todolistId: string, title: string) {
+    createTask(todolistId: string, title: string) {
         return instance.post<ResponseType<TaskType>>(`todo-lists/${todolistId}/tasks`, {title})
     },
     deleteTask(todolistId: string, taskId: string){
         return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`)
     },
-    updateTask(todolistId: string, taskId: string, item:TaskModelType) {
-        return instance.put(`todo-lists/${todolistId}/tasks/${taskId}`, {item} )
+    updateTask(todolistId: string, taskId: string, model:TaskModelType) {
+        return instance.put<ResponseType<TaskType>>(`todo-lists/${todolistId}/tasks/${taskId}`, model)
     },
 }
