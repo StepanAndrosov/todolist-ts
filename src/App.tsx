@@ -5,10 +5,10 @@ import {AddItemForm} from "./components/AddItemForm/AddItemForm";
 import {AppBar, Box, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import {
-    addTodoListAC,
+    addTodoListTC,
     changeTodoListFilterAC,
-    changeTodoListTitleAC, fetchTodolistsTC, FilterValuesType,
-    removeTodolistAC, TodolistDomainType
+    changeTodoListTitleTC, fetchTodolistsTC, FilterValuesType,
+    removeTodoListTC, TodolistDomainType
 } from "./redux/todoReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootState} from "./redux/store";
@@ -23,7 +23,7 @@ export const App = () => {
     }, [dispatch])
 
     const changeTodoListTitle = useCallback((id: string, newTitle: string) => {
-        const action = changeTodoListTitleAC(id, newTitle)
+        const action = changeTodoListTitleTC(id, newTitle)
         dispatch(action)
     }, [dispatch])
     const changeFilter = useCallback((todoListId: string, value: FilterValuesType) => {
@@ -31,11 +31,11 @@ export const App = () => {
         dispatch(action)
     }, [dispatch])
     const removeTodolist = useCallback((todolistId: string) => {
-        const action = removeTodolistAC(todolistId)
+        const action = removeTodoListTC(todolistId)
         dispatch(action)
     }, [dispatch])
     const addTodolist = useCallback((title: string) => {
-        const action = addTodoListAC(title)
+        const action = addTodoListTC(title)
         dispatch(action)
     }, [dispatch])
 

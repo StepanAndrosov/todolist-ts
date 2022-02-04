@@ -6,7 +6,7 @@ import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootState} from "../../redux/store";
-import {addTaskAC, fetchTasksTC} from "../../redux/tasksReducer";
+import {addTaskTC, fetchTasksTC} from "../../redux/tasksReducer";
 import {Task} from "./Task";
 import {FilterValuesType} from "../../redux/todoReducer";
 import {TaskStatuses, TaskType} from "../../api/todolistsAPI";
@@ -30,7 +30,7 @@ export const Todolist = React.memo(({title, changeFilter, filter, ...props}: Pro
 
     useEffect(() => {
         dispatch(fetchTasksTC(props.id))
-    },[dispatch])
+    }, [dispatch, props.id])
 
     const onAllClickHandler = useCallback(() => changeFilter(props.id, "all"), [changeFilter, props.id])
     const onActiveClickHandler = useCallback(() => changeFilter(props.id, "active"), [changeFilter, props.id])
@@ -41,13 +41,12 @@ export const Todolist = React.memo(({title, changeFilter, filter, ...props}: Pro
     }, [props])
 
     const addTask = useCallback((title: string) => {
-        dispatch(addTaskAC(title, props.id))
+        dispatch(addTaskTC(props.id, title))
     }, [dispatch, props.id])
 
     const onChangeTodoListTitleHandler = useCallback((newTitle: string) => {
         props.changeTodoListTitle(props.id, newTitle)
     }, [props])
-
 
     let taskForToDoList: Array<TaskType> = tasks
     switch (filter) {

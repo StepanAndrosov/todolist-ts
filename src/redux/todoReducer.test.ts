@@ -30,7 +30,13 @@ test("add todolist should be work not immutability", () => {
         {id: todolistId2, title: "what to buy?", filter: "all", addedDate: '', order: 0}
     ]
     const newTitle = "what to read?"
-    const endState = todoReducer(startState, addTodoListAC(newTitle))
+    const todolist: TodolistType = {
+        id: "todo3",
+        title: newTitle,
+        addedDate: "",
+        order: 0
+    }
+    const endState = todoReducer(startState, addTodoListAC(todolist))
 
     expect(endState.length).toBe(3)
     expect(endState[0].title).toBe(newTitle)

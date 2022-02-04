@@ -1,5 +1,7 @@
 import {useDispatch} from "react-redux";
-import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "../../redux/tasksReducer";
+import {
+    removeTaskTC, updateTaskTC
+} from "../../redux/tasksReducer";
 import React, {ChangeEvent, useCallback} from "react";
 import style from "./Todolist.module.css";
 import {Checkbox, IconButton} from "@material-ui/core";
@@ -17,19 +19,20 @@ export const Task = React.memo(({task, todolistId}: TaskPropsType) => {
     const dispatch = useDispatch()
 
     const onRemoveHandler = useCallback(() => {
-        dispatch(removeTaskAC(task.id, todolistId))
+        dispatch(removeTaskTC(todolistId, task.id))
     }, [dispatch, task.id, todolistId])
 
-    const onChangeHandler = useCallback((checked: boolean) => {
-        dispatch(changeTaskStatusAC(task.id, todolistId, checked ? TaskStatuses.Completed : TaskStatuses.New))
+    const onChangeStatus = useCallback((checked: boolean) => {
+        const status = checked ? TaskStatuses.Completed : TaskStatuses.New
+        dispatch(updateTaskTC(todolistId, task.id, {status}))
     }, [dispatch, task.id, todolistId])
 
     const onChangeTitleHandler = useCallback((title: string) => {
-        dispatch(changeTaskTitleAC(task.id, todolistId, title))
+        dispatch(updateTaskTC(todolistId, task.id , {title}))
     }, [dispatch, task.id, todolistId])
 
     const onChecked = (e: ChangeEvent<HTMLInputElement>) => {
-        onChangeHandler(e.currentTarget.checked)
+        onChangeStatus(e.currentTarget.checked)
     }
     return (
         <div key={task.id + task.title} className={task.status === TaskStatuses.Completed ? style.isDone : ""}>
