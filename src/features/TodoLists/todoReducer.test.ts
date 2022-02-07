@@ -6,7 +6,7 @@ import {
     todoReducer
 } from "./todoReducer";
 import {v1} from "uuid";
-import {TodolistType} from "../api/todolistsAPI";
+import {TodolistType} from "../../api/todolistsAPI";
 
 
 test("remove todolist should be work", () => {

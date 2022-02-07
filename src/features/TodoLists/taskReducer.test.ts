@@ -6,7 +6,7 @@ import {
     TaskStateType, updateTaskAC
 } from "./tasksReducer";
 import {addTodoListAC, removeTodolistAC, setTodolistsAC} from "./todoReducer";
-import {TaskPriorities, TaskStatuses, TaskType, TodolistType} from "../api/todolistsAPI";
+import {TaskPriorities, TaskStatuses, TaskType, TodolistType} from "../../api/todolistsAPI";
 
 
 const startState: TaskStateType = {
@@ -95,9 +95,9 @@ const startState: TaskStateType = {
 }
 
 test("correct task should be deleted from correct array", () => {
-    const removeId = "1"
     const todoListId = "todolistId1"
-    const action = removeTaskAC(removeId, todoListId)
+    const removeId = "1"
+    const action = removeTaskAC(todoListId, removeId )
     const endState = tasksReducer(startState, action)
 
     expect(endState[todoListId].length).toBe(3)
@@ -106,7 +106,6 @@ test("correct task should be deleted from correct array", () => {
 })
 
 test("add task should be work not immutability", () => {
-
     const newTask: TaskType = {
             id: '5',
             title: "Vue & NuxtJS",
@@ -131,8 +130,6 @@ test("add task should be work not immutability", () => {
     expect(endState[todoListId][0].todoListId).toBe(todoListId)
     expect(startState["todolistId2"].length).toBe(3)
 })
-
-
 test("change task status todolist should be work", () => {
     const changeStatusTaskId = "3"
     const todoListId = "todolistId1"
@@ -142,10 +139,7 @@ test("change task status todolist should be work", () => {
     expect(endState[todoListId][2].status).toBe(TaskStatuses.Completed)
     expect(endState["todolistId2"][2].status).toBe(TaskStatuses.New)
 })
-
-
 test("change task title should be work", () => {
-
     const changeTitleTaskId = "3"
     const todoListId = "todolistId1"
     const newTitle = "React, Vue, NextJS, NuxtJS"
@@ -157,7 +151,6 @@ test("change task title should be work", () => {
     expect(endState[todoListId][1].title).toBe("JS")
     expect(endState[todoListId][3].title).toBe("Redux")
 })
-
 test("new property with new array should be added when todolist is added", () => {
     const todolist: TodolistType = {
         id: "todo3",
@@ -184,7 +177,6 @@ test("remove todolist should be delete", () => {
     expect(endState[todolistId]).toBeUndefined()
     expect(endState["todolistId1"]).toBe(startState["todolistId1"])
 })
-
 test("empty arrays should be added when we set todolists", () => {
     const action = setTodolistsAC([
         {id: "todolistId1", title: "what to learn?", addedDate: '', order: 0},

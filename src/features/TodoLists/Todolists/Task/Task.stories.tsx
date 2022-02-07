@@ -1,12 +1,11 @@
 import {Task} from "./Task";
 import React from "react";
-import {ReduxStoreDecorator} from "../../stories/decorators/ReduxStoreDecorator";
+import {ReduxStoreDecorator} from "../../../../stories/decorators/ReduxStoreDecorator";
 import {Meta} from "@storybook/react";
-import {TaskPriorities, TaskStatuses} from "../../api/todolistsAPI";
-
+import {TaskPriorities, TaskStatuses} from "../../../../api/todolistsAPI";
 
 export default {
-    title: "Todolist/Task comp",
+    title: "Todolists/Task comp",
     component: Task,
     decorators: [ReduxStoreDecorator]
 } as Meta
