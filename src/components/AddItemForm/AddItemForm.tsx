@@ -1,13 +1,13 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 import style from "./AddItemForm.module.css"
-import { IconButton, TextField} from "@material-ui/core";
-import {Add} from "@material-ui/icons";
+import {IconButton, TextField} from "@mui/material";
+import {Add} from "@mui/icons-material";
 
 type AddItemFormType = {
     addItem: (title: string) => void
+    disabled?: boolean
 }
-
-export const AddItemForm = React.memo((props: AddItemFormType) => {
+export const AddItemForm = React.memo(({addItem, disabled = false}: AddItemFormType) => {
     const [newTaskTitle, setNewTaskTitle] = useState("")
     const [error, setError] = useState<string | null>(null)
     const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -22,7 +22,7 @@ export const AddItemForm = React.memo((props: AddItemFormType) => {
                 setError("Title is required")
                 return
             }
-            props.addItem(newTaskTitle.trim())
+            addItem(newTaskTitle.trim())
             setNewTaskTitle("")
         }
     }
@@ -31,11 +31,12 @@ export const AddItemForm = React.memo((props: AddItemFormType) => {
             setError("Title is required")
             return
         }
-        props.addItem(newTaskTitle.trim())
+        addItem(newTaskTitle.trim())
         setNewTaskTitle("")
     }
     return <div className={style.AddItemForm}>
         <TextField error={!!error}
+                   disabled={disabled}
                    helperText={error}
                    label={"type value"}
                    variant={"outlined"}
@@ -43,7 +44,7 @@ export const AddItemForm = React.memo((props: AddItemFormType) => {
                    onChange={onNewTitleChangeHandler}
                    onKeyPress={onKeyPressHandler}
         />
-        <IconButton size={"small"} onClick={addTask} color={"primary"}>
+        <IconButton size={"small"} onClick={addTask} color={"primary"} disabled={disabled}>
             <Add />
         </IconButton>
     </div>

@@ -5,7 +5,7 @@ import {Meta} from "@storybook/react";
 import {TaskPriorities, TaskStatuses} from "../../../../api/todolistsAPI";
 
 export default {
-    title: "Todolists/Task comp",
+    title: "Todolist/Task comp",
     component: Task,
     decorators: [ReduxStoreDecorator]
 } as Meta

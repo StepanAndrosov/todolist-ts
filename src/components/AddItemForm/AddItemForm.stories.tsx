@@ -5,7 +5,7 @@ import {ComponentMeta, ComponentStory} from "@storybook/react";
 
 
 export default {
-    title: "Todolists/AddItemForm comp",
+    title: "Todolist/AddItemForm comp",
     component: AddItemForm
 } as ComponentMeta<typeof AddItemForm>
 
@@ -16,4 +16,11 @@ export const AddItemFormBase = Template.bind({})
 
 AddItemFormBase.args = {
     addItem: action("Button clicked inside the form")
+}
+
+export const AddItemFormDisabled = Template.bind({})
+
+AddItemFormDisabled.args = {
+    addItem: action(""),
+    disabled: true
 }

@@ -4,7 +4,7 @@ import {action} from "@storybook/addon-actions";
 import {Meta} from "@storybook/react";
 
 export default {
-    title: "Todolists/EditableSpan comp",
+    title: "Todolist/EditableSpan comp",
     component: EditableSpan
 } as Meta
 

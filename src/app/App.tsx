@@ -1,12 +1,22 @@
 import React from 'react';
 import './App.css';
-import {AppBar, Box, Button, Container, IconButton, Toolbar, Typography} from "@material-ui/core";
-import {Menu} from "@material-ui/icons";
 import {TodoLists} from "../features/TodoLists/TodoLists";
+import {AppBar, Box, Button, Container, IconButton, LinearProgress, Toolbar, Typography} from "@mui/material";
+import {Menu} from "@mui/icons-material";
+import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
+import {useSelector} from "react-redux";
+import {RequestStatusType} from "./app-reduser";
+import {AppRootState} from "./store";
 
-export const App = () => {
+type PropsAppType = {
+    demo?: boolean
+}
+
+export const App: React.FC<PropsAppType> = React.memo(({demo = false}) => {
+    const status = useSelector<AppRootState, RequestStatusType>((state) => state.app.status )
     return (
         <div className="App">
+            <ErrorSnackbar/>
             <AppBar position={"static"}>
                 <Toolbar>
                     <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%'}}>
@@ -23,12 +33,13 @@ export const App = () => {
                         </Button>
                     </Box>
                 </Toolbar>
+                {status === 'loading' && <LinearProgress/>}
             </AppBar>
             <Container fixed>
-                <TodoLists/>
+                <TodoLists demo={demo}/>
             </Container>
         </div>
     );
-}
+})
 
 

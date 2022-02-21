@@ -10,17 +10,24 @@ import {
     removeTodoListTC,
     TodolistDomainType
 } from "./todoReducer";
-import {Grid, Paper} from "@material-ui/core";
 import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
-import {Todolist} from "./Todolists/Todolist";
+import {Todolist} from "./Todolist/Todolist";
+import {Grid, Paper} from "@mui/material";
 
-export const TodoLists: React.FC = () => {
+type PropsTodoListsType = {
+    demo?: boolean
+}
+
+export const TodoLists: React.FC<PropsTodoListsType> = React.memo(({demo = false}) => {
     const dispatch = useDispatch()
     const todolists = useSelector<AppRootState, Array<TodolistDomainType>>(state => state.todolists)
 
     useEffect(() => {
+        if (demo) {
+            return
+        }
         dispatch(fetchTodolistsTC())
-    }, [dispatch])
+    }, [dispatch, demo])
 
     const changeTodoListTitle = useCallback((id: string, newTitle: string) => {
         const action = changeTodoListTitleTC(id, newTitle)
@@ -54,13 +61,12 @@ export const TodoLists: React.FC = () => {
                             <Grid key={tl.id} item>
                                 <Paper key={tl.id} elevation={2} style={{padding: "15px"}}>
                                     <Todolist
-                                        id={tl.id}
+                                        todolist={tl}
                                         key={tl.id}
-                                        title={tl.title}
                                         changeFilter={changeFilter}
-                                        filter={tl.filter}
                                         removeTodolist={removeTodolist}
                                         changeTodoListTitle={changeTodoListTitle}
+                                        demo={demo}
                                     />
                                 </Paper>
                             </Grid>
@@ -70,4 +76,4 @@ export const TodoLists: React.FC = () => {
             </Grid>
         </>
     )
-}
+})

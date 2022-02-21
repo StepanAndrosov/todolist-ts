@@ -4,10 +4,10 @@ import {
 } from "../../tasksReducer";
 import React, {ChangeEvent, useCallback} from "react";
 import style from "../Todolist.module.css";
-import {Checkbox, IconButton} from "@material-ui/core";
 import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";
-import {Delete} from "@material-ui/icons";
 import {TaskStatuses, TaskType} from "../../../../api/todolistsAPI";
+import {Delete} from "@mui/icons-material";
+import {Checkbox, IconButton} from "@mui/material";
 
 
 type TaskPropsType = {

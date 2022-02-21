@@ -5,7 +5,7 @@ import {Meta} from "@storybook/react";
 
 
 export default {
-    title: "Todolists/App",
+    title: "Todolist/App",
     component: App,
     decorators: [ReduxStoreDecorator]
 } as Meta
@@ -13,7 +13,7 @@ export default {
 
 
 export const AppStories = () => {
-    return <App />
+    return <App demo={true} />
 }
 
 
