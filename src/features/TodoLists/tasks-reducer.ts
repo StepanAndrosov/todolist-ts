@@ -1,4 +1,4 @@
-import {addTodoListAC, removeTodolistAC, setTodolistsAC} from "./todoReducer";
+import {addTodoListAC, removeTodolistAC, setTodolistsAC} from "./todo-reducer";
 import {TaskModelType, TaskType, todolistsAPI} from "../../api/todolistsAPI";
 import {Dispatch} from "redux";
 import {AppRootState} from "../../app/store";

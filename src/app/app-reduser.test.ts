@@ -1,12 +1,21 @@
-import {appReducer, ErrorType, RequestStatusType, setAppErrorAC, setAppStatusAC} from "./app-reduser";
+import {
+    appReducer,
+    ErrorType,
+    RequestStatusType,
+    setAppErrorAC,
+    setAppInitialized,
+    setAppStatusAC
+} from "./app-reduser";
 
 type InitialType = {
     status: RequestStatusType,
     error: ErrorType
+    isInitialized: boolean
 }
 const initialState: InitialType = {
     status: 'idle',
-    error: null
+    error: null,
+    isInitialized: false
 }
 test( 'correct error message should be set',() => {
     const err1 = 'some error'
@@ -21,4 +30,10 @@ test( 'correct status should be set',() => {
     const endState2 = appReducer(initialState, setAppStatusAC('succeeded'))
     expect(endState1.status).toBe('loading')
     expect(endState2.status).toBe('succeeded')
+})
+test( 'app isInitialized should be set',() => {
+    const endState1 = appReducer(initialState, setAppInitialized(true))
+    const endState2 = appReducer(initialState, setAppInitialized(false))
+    expect(endState1.isInitialized).toBe(true)
+    expect(endState2.isInitialized).toBe(false)
 })

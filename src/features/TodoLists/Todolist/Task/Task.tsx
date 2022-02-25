@@ -1,7 +1,7 @@
 import {useDispatch} from "react-redux";
 import {
     removeTaskTC, updateTaskTC
-} from "../../tasksReducer";
+} from "../../tasks-reducer";
 import React, {ChangeEvent, useCallback} from "react";
 import style from "../Todolist.module.css";
 import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";

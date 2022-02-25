@@ -4,8 +4,8 @@ import {
     setTasksAC,
     tasksReducer,
     TaskStateType, updateTaskAC
-} from "./tasksReducer";
-import {addTodoListAC, removeTodolistAC, setTodolistsAC} from "./todoReducer";
+} from "./tasks-reducer";
+import {addTodoListAC, removeTodolistAC, setTodolistsAC} from "./todo-reducer";
 import {TaskPriorities, TaskStatuses, TaskType, TodolistType} from "../../api/todolistsAPI";
 
 
