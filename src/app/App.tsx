@@ -29,15 +29,17 @@ export const App: React.FC<PropsAppType> = React.memo(({demo = false}) => {
     const status = useSelector<AppRootState, RequestStatusType>((state) => state.app.status)
     const isInitialized = useSelector<AppRootState, boolean>(state => state.app.isInitialized)
     const isLoggedIn = useSelector<AppRootState, boolean>(state => state.auth.isLoggedIn)
-
     const dispatch = useDispatch()
+
     useEffect(() => {
-        dispatch(initializeAppTC())
-    }, [])
+        if (!demo) {
+            dispatch(initializeAppTC())
+        }
+    }, [dispatch, demo])
 
     const logoutHandler = useCallback(() => {
         dispatch(logoutTC())
-    }, [])
+    }, [dispatch])
 
     if (!isInitialized) {
         return (
@@ -46,10 +48,7 @@ export const App: React.FC<PropsAppType> = React.memo(({demo = false}) => {
             </Box>
         )
     }
-
-
     return (
-        <BrowserRouter>
             <div className="App">
                 <ErrorSnackbar/>
                 <AppBar position={"static"}>
@@ -87,7 +86,6 @@ export const App: React.FC<PropsAppType> = React.memo(({demo = false}) => {
                     </Routes>
                 </Container>
             </div>
-        </BrowserRouter>
     );
 })
 

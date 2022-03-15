@@ -25,8 +25,6 @@ export const TodoLists: React.FC<PropsTodoListsType> = React.memo(({demo = false
     const isLoggedIn = useSelector<AppRootState, boolean>(state => state.auth.isLoggedIn)
 
 
-
-
     useEffect(() => {
         if (demo || !isLoggedIn) {
             return
@@ -39,11 +37,11 @@ export const TodoLists: React.FC<PropsTodoListsType> = React.memo(({demo = false
         dispatch(action)
     }, [dispatch])
     const changeFilter = useCallback((todoListId: string, value: FilterValuesType) => {
-        const action = changeTodoListFilterAC(todoListId, value)
+        const action = changeTodoListFilterAC({id: todoListId, filter: value})
         dispatch(action)
     }, [dispatch])
-    const removeTodolist = useCallback((todolistId: string) => {
-        const action = removeTodoListTC(todolistId)
+    const removeTodolist = useCallback((todoListId: string) => {
+        const action = removeTodoListTC(todoListId)
         dispatch(action)
     }, [dispatch])
     const addTodolist = useCallback((title: string) => {

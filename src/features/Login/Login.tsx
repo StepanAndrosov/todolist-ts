@@ -56,13 +56,15 @@ export const Login = () => {
     }
     return (
         <Grid container justifyContent={'center'} style={{marginTop: '40px'}}>
-            <Paper elevation={2} style={{padding: "15px", }}>
-                <form onSubmit={formik.handleSubmit} >
+            <Paper elevation={2} style={{padding: "15px",}}>
+                <form onSubmit={formik.handleSubmit}>
                     <FormControl>
                         <FormLabel>
                             <p>To log in get registered
                                 <a href={'https://social-network.samuraijs.com/'}
-                                   target={'_blank'}> here
+                                   target={'_blank'}
+                                   rel="noreferrer">
+                                    here
                                 </a>
                             </p>
                             <p>or use common test account credentials:</p>
