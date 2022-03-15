@@ -1,7 +1,6 @@
 import {
-    addTaskAC,
+    addTaskAC, fetchTasks,
     removeTaskAC,
-    setTasksAC,
     tasksReducer,
     TaskStateType, updateTaskAC
 } from "./tasks-reducer";
@@ -238,8 +237,7 @@ test("tasks should be added for todolist", () => {
             addedDate: ""
         }
     ]
-
-    const action = setTasksAC({todoListId: key, tasks})
+    const action = fetchTasks.fulfilled({todoListId: key, tasks}, '',key)
     const endState = tasksReducer(todo, action)
 
     expect(endState[key].length).toBe(3)

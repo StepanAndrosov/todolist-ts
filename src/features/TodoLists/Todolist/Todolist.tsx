@@ -4,7 +4,7 @@ import {AddItemForm} from "../../../components/AddItemForm/AddItemForm";
 import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootState} from "../../../app/store";
-import {addTaskTC, fetchTasksTC} from "../tasks-reducer";
+import {addTaskTC, fetchTasks} from "../tasks-reducer";
 import {Task} from "./Task/Task";
 import {FilterValuesType, TodolistDomainType} from "../todo-reducer";
 import {TaskStatuses, TaskType} from "../../../api/todolistsAPI";
@@ -34,7 +34,7 @@ export const Todolist = React.memo(({
         if (demo) {
             return
         }
-        dispatch(fetchTasksTC(todolist.id))
+        dispatch(fetchTasks(todolist.id))
     }, [dispatch, todolist.id, demo])
 
     const onAllClickHandler = useCallback(() => changeFilter(todolist.id, "all"), [changeFilter, todolist.id])
@@ -76,7 +76,7 @@ export const Todolist = React.memo(({
                     <Task
                         key={t.id}
                         task={t}
-                        todolistId={todolist.id}
+                        todoListId={todolist.id}
                     />
                 )
             })}

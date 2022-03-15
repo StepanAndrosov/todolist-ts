@@ -26,7 +26,7 @@ export const TaskExample = () => {
                 description: '',
                 priority: TaskPriorities.Low
             }}
-            todolistId={(Math.random() * 100).toString()}
+            todoListId={(Math.random() * 100).toString()}
         />
         <Task
             key={(Math.random() * 100).toString()}
@@ -42,7 +42,7 @@ export const TaskExample = () => {
                 description: '',
                 priority: TaskPriorities.Low
             }}
-            todolistId={(Math.random() * 100).toString()}
+            todoListId={(Math.random() * 100).toString()}
         />
     </>
 }

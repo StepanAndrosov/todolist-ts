@@ -17,7 +17,7 @@ import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 import {useDispatch, useSelector} from "react-redux";
 import {initializeAppTC, RequestStatusType} from "./app-reduser";
 import {AppRootState} from "./store";
-import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "../features/Login/Login";
 import {logoutTC} from "../features/Login/auth-reducer";
 
@@ -49,43 +49,43 @@ export const App: React.FC<PropsAppType> = React.memo(({demo = false}) => {
         )
     }
     return (
-            <div className="App">
-                <ErrorSnackbar/>
-                <AppBar position={"static"}>
-                    <Toolbar>
-                        <Box sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            width: '100%'
-                        }}>
-                            <Box sx={{display: 'flex', alignItems: 'center'}}>
-                                <IconButton edge={"start"} color={"inherit"} aria-label={"menu"}>
-                                    <Menu/>
-                                </IconButton>
-                                <Typography variant={"h6"} component={"div"}>
-                                    News
-                                </Typography>
-                            </Box>
-                            {
-                                isLoggedIn &&
-                                <Button onClick={logoutHandler} color={"inherit"}>
-                                    Log out
-                                </Button>
-                            }
+        <div className="App">
+            <ErrorSnackbar/>
+            <AppBar position={"static"}>
+                <Toolbar>
+                    <Box sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        width: '100%'
+                    }}>
+                        <Box sx={{display: 'flex', alignItems: 'center'}}>
+                            <IconButton edge={"start"} color={"inherit"} aria-label={"menu"}>
+                                <Menu/>
+                            </IconButton>
+                            <Typography variant={"h6"} component={"div"}>
+                                News
+                            </Typography>
                         </Box>
-                    </Toolbar>
-                    {status === 'loading' && <LinearProgress/>}
-                </AppBar>
-                <Container fixed>
-                    <Routes>
-                        <Route path="/" element={<TodoLists demo={demo}/>}/>
-                        <Route path="/login" element={<Login/>}/>
-                        <Route path="/404" element={<h1>404: PAGE NOT FOUND</h1>}/>
-                        <Route path="*" element={<Navigate to={"/404"}/>}/>
-                    </Routes>
-                </Container>
-            </div>
+                        {
+                            isLoggedIn &&
+                            <Button onClick={logoutHandler} color={"inherit"}>
+                                Log out
+                            </Button>
+                        }
+                    </Box>
+                </Toolbar>
+                {status === 'loading' && <LinearProgress/>}
+            </AppBar>
+            <Container fixed>
+                <Routes>
+                    <Route path="/" element={<TodoLists demo={demo}/>}/>
+                    <Route path="/login" element={<Login/>}/>
+                    <Route path="/404" element={<h1>404: PAGE NOT FOUND</h1>}/>
+                    <Route path="*" element={<Navigate to={"/404"}/>}/>
+                </Routes>
+            </Container>
+        </div>
     );
 })
 
