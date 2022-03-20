@@ -19,7 +19,7 @@ import {initializeAppTC, RequestStatusType} from "./app-reduser";
 import {AppRootState} from "./store";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "../features/Login/Login";
-import {logoutTC} from "../features/Login/auth-reducer";
+import {logout} from "../features/Login/auth-reducer";
 
 type PropsAppType = {
     demo?: boolean
@@ -38,7 +38,7 @@ export const App: React.FC<PropsAppType> = React.memo(({demo = false}) => {
     }, [dispatch, demo])
 
     const logoutHandler = useCallback(() => {
-        dispatch(logoutTC())
+        dispatch(logout())
     }, [dispatch])
 
     if (!isInitialized) {

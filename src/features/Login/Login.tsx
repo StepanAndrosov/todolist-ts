@@ -7,16 +7,22 @@ import FormGroup from '@mui/material/FormGroup';
 import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import {useFormik} from "formik";
-import {useDispatch, useSelector} from "react-redux";
-import {loginTC} from "./auth-reducer";
-import {AppRootState} from "../../app/store";
+import {FormikHelpers, useFormik} from "formik";
+import {useSelector} from "react-redux";
+import {login} from "./auth-reducer";
+import {AppRootState, useAppDispatch} from "../../app/store";
 import {Navigate} from "react-router-dom";
 import {Paper} from "@mui/material";
 
+type FormValuesType = {
+    email: string
+    password: string
+    rememberMe: boolean
+}
+
 export const Login = () => {
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const isLoggedIn = useSelector<AppRootState, boolean>(state => state.auth.isLoggedIn)
 
     const formik = useFormik({
@@ -33,7 +39,8 @@ export const Login = () => {
             }
             if (!values.email) {
                 errors.email = ' Email is required';
-            } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+            }
+            else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
                 errors.email = 'Invalid email address';
             }
             return errors;
@@ -43,9 +50,14 @@ export const Login = () => {
             password: '',
             rememberMe: false
         },
-        onSubmit: values => {
-            alert(JSON.stringify(values));
-            dispatch(loginTC(values))
+        onSubmit: async (values: FormValuesType, formikHelpers: FormikHelpers<FormValuesType>) => {
+            const action = await dispatch(login(values))
+            if (login.rejected.match(action)) {
+                if(action.payload?.fieldsErrors?.length) {
+                    const error = action.payload?.fieldsErrors[0]
+                    formikHelpers.setFieldError(error.field, error.error)
+                }
+            }
 
             formik.resetForm()
         },
@@ -76,13 +88,23 @@ export const Login = () => {
                                        margin="normal"
                                        {...formik.getFieldProps("email")}
                             />
-                            {formik.errors.email ? <div style={{color: 'red'}}>{formik.errors.email}</div> : null}
+                            {formik.errors.email ? <div style={{
+                                color: 'red',
+                                fontSize: '14px',
+                                fontWeight: '600',
+                                lineHeight: '14px'
+                            }}>{formik.errors.email}</div> : null}
                             <TextField type="password"
                                        label="Password"
                                        margin="normal"
                                        {...formik.getFieldProps("password")}
                             />
-                            {formik.errors.password ? <div style={{color: 'red'}}>{formik.errors.password}</div> : null}
+                            {formik.errors.password ? <div style={{
+                                color: 'red',
+                                fontSize: '14px',
+                                fontWeight: '600',
+                                lineHeight: '14px'
+                            }}>{formik.errors.password}</div> : null}
                             <FormControlLabel label={'Remember me'}
                                               control={<Checkbox/>}
                                               {...formik.getFieldProps("rememberMe")}

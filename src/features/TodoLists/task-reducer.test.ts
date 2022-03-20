@@ -1,6 +1,5 @@
 import {
-    addTaskAC, fetchTasks,
-    removeTaskAC,
+    addTaskAC, fetchTasks, removeTask,
     tasksReducer,
     TaskStateType, updateTaskAC
 } from "./tasks-reducer";
@@ -95,13 +94,13 @@ const startState: TaskStateType = {
 
 test("correct task should be deleted from correct array", () => {
     const todoListId = "todolistId1"
-    const removeId = "1"
-    const action = removeTaskAC({todoListId, taskId: removeId})
+    const taskId = "1"
+    const action = removeTask.fulfilled({todoListId, taskId}, "", {todoListId, taskId})
     const endState = tasksReducer(startState, action)
 
     expect(endState[todoListId].length).toBe(3)
     expect(endState["todolistId2"].length).toBe(3)
-    expect(endState[todoListId].every(t => t.id != removeId)).toBeTruthy()
+    expect(endState[todoListId].every(t => t.id != taskId)).toBeTruthy()
 })
 test("add task should be work not immutability", () => {
     const newTask: TaskType = {
