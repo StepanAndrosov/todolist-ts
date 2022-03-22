@@ -5,9 +5,9 @@ import {
     addTodoListTC,
     changeTodoListFilterAC,
     changeTodoListTitleTC,
-    fetchTodolistsTC,
+    fetchTodolists,
     FilterValuesType,
-    removeTodoListTC,
+    removeTodoList,
     TodolistDomainType
 } from "./todo-reducer";
 import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
@@ -24,12 +24,11 @@ export const TodoLists: React.FC<PropsTodoListsType> = React.memo(({demo = false
     const todolists = useSelector<AppRootState, Array<TodolistDomainType>>(state => state.todolists)
     const isLoggedIn = useSelector<AppRootState, boolean>(state => state.auth.isLoggedIn)
 
-
     useEffect(() => {
         if (demo || !isLoggedIn) {
             return
         }
-        dispatch(fetchTodolistsTC())
+        dispatch(fetchTodolists())
     }, [dispatch, demo, isLoggedIn])
 
     const changeTodoListTitle = useCallback((id: string, newTitle: string) => {
@@ -41,7 +40,7 @@ export const TodoLists: React.FC<PropsTodoListsType> = React.memo(({demo = false
         dispatch(action)
     }, [dispatch])
     const removeTodolist = useCallback((todoListId: string) => {
-        const action = removeTodoListTC(todoListId)
+        const action = removeTodoList(todoListId)
         dispatch(action)
     }, [dispatch])
     const addTodolist = useCallback((title: string) => {

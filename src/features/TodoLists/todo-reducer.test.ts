@@ -1,8 +1,8 @@
 import {
     addTodoListAC, changeTodolistEntityStatusAC,
     changeTodoListFilterAC,
-    changeTodoListTitleAC, FilterValuesType,
-    removeTodolistAC, setTodolistsAC, TodolistDomainType,
+    changeTodoListTitleAC, fetchTodolists, FilterValuesType,
+    removeTodolistAC, TodolistDomainType,
     todoReducer
 } from "./todo-reducer";
 import {v1} from "uuid";
@@ -54,7 +54,9 @@ test("todolists should be added to the state", () => {
         {id: todolistId1, title: "what to learn?", addedDate: '', order: 0},
         {id: todolistId2, title: "what to buy?", addedDate: '', order: 0}
     ]
-    const endState = todoReducer([], setTodolistsAC({todolists:getterState}))
+    const updateObj = {todolists:getterState};
+    const action = fetchTodolists.fulfilled(updateObj, 'requestId')
+    const endState = todoReducer([], action)
     expect(endState.length).toBe(2)
     expect(endState[0].filter).toBe('all')
     expect(endState[1].filter).toBe('all')

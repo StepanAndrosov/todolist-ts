@@ -1,14 +1,11 @@
 import {useDispatch} from "react-redux";
-import {
-    removeTask, updateTaskTC
-} from "../../tasks-reducer";
+import {removeTask, updateTask} from "../../tasks-reducer";
 import React, {ChangeEvent, useCallback} from "react";
 import style from "../Todolist.module.css";
 import {EditableSpan} from "../../../../components/EditableSpan/EditableSpan";
 import {TaskStatuses, TaskType} from "../../../../api/todolistsAPI";
 import {Delete} from "@mui/icons-material";
 import {Checkbox, IconButton} from "@mui/material";
-
 
 type TaskPropsType = {
     task: TaskType
@@ -24,11 +21,11 @@ export const Task = React.memo(({task, todoListId}: TaskPropsType) => {
 
     const onChangeStatus = useCallback((checked: boolean) => {
         const status = checked ? TaskStatuses.Completed : TaskStatuses.New
-        dispatch(updateTaskTC(todoListId, task.id, {status}))
+        dispatch(updateTask({todoListId, taskId: task.id, domainModel: {status}}))
     }, [dispatch, task.id, todoListId])
 
     const onChangeTitleHandler = useCallback((title: string) => {
-        dispatch(updateTaskTC(todoListId, task.id, {title}))
+        dispatch(updateTask({todoListId, taskId: task.id, domainModel: {title}}))
     }, [dispatch, task.id, todoListId])
 
     const onChecked = (e: ChangeEvent<HTMLInputElement>) => {

@@ -15,7 +15,7 @@ import {
 import {Menu} from "@mui/icons-material";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 import {useDispatch, useSelector} from "react-redux";
-import {initializeAppTC, RequestStatusType} from "./app-reduser";
+import {initializeApp, RequestStatusType} from "./app-reduser";
 import {AppRootState} from "./store";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {Login} from "../features/Login/Login";
@@ -33,7 +33,7 @@ export const App: React.FC<PropsAppType> = React.memo(({demo = false}) => {
 
     useEffect(() => {
         if (!demo) {
-            dispatch(initializeAppTC())
+            dispatch(initializeApp())
         }
     }, [dispatch, demo])
 

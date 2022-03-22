@@ -4,7 +4,7 @@ import {AddItemForm} from "../../../components/AddItemForm/AddItemForm";
 import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootState} from "../../../app/store";
-import {addTaskTC, fetchTasks} from "../tasks-reducer";
+import {addTask, fetchTasks} from "../tasks-reducer";
 import {Task} from "./Task/Task";
 import {FilterValuesType, TodolistDomainType} from "../todo-reducer";
 import {TaskStatuses, TaskType} from "../../../api/todolistsAPI";
@@ -44,8 +44,8 @@ export const Todolist = React.memo(({
         removeTodolist(todolist.id)
     }, [todolist.id, removeTodolist])
 
-    const addTask = useCallback((title: string) => {
-        dispatch(addTaskTC(todolist.id, title))
+    const onAddTask = useCallback((title: string) => {
+        dispatch(addTask({todoListId:todolist.id, title}))
     }, [dispatch, todolist.id])
 
     const onChangeTodoListTitleHandler = useCallback((newTitle: string) => {
@@ -69,7 +69,7 @@ export const Todolist = React.memo(({
                 <Delete/>
             </IconButton>
         </div>
-        <AddItemForm addItem={addTask} disabled={todolist.entityStatus === 'loading'}/>
+        <AddItemForm addItem={onAddTask} disabled={todolist.entityStatus === 'loading'}/>
         <div>
             {taskForToDoList.map(t => {
                 return (
