@@ -2,9 +2,9 @@ import React, {useCallback, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootState} from "../../app/store";
 import {
-    addTodoListTC,
+    addTodoList,
     changeTodoListFilterAC,
-    changeTodoListTitleTC,
+    changeTodoListTitle,
     fetchTodolists,
     FilterValuesType,
     removeTodoList,
@@ -31,8 +31,8 @@ export const TodoLists: React.FC<PropsTodoListsType> = React.memo(({demo = false
         dispatch(fetchTodolists())
     }, [dispatch, demo, isLoggedIn])
 
-    const changeTodoListTitle = useCallback((id: string, newTitle: string) => {
-        const action = changeTodoListTitleTC(id, newTitle)
+    const onChangeTodoListTitle = useCallback((id: string, newTitle: string) => {
+        const action = changeTodoListTitle({id, title: newTitle})
         dispatch(action)
     }, [dispatch])
     const changeFilter = useCallback((todoListId: string, value: FilterValuesType) => {
@@ -44,7 +44,7 @@ export const TodoLists: React.FC<PropsTodoListsType> = React.memo(({demo = false
         dispatch(action)
     }, [dispatch])
     const addTodolist = useCallback((title: string) => {
-        const action = addTodoListTC(title)
+        const action = addTodoList(title)
         dispatch(action)
     }, [dispatch])
     if (!isLoggedIn) {
@@ -69,7 +69,7 @@ export const TodoLists: React.FC<PropsTodoListsType> = React.memo(({demo = false
                                         key={tl.id}
                                         changeFilter={changeFilter}
                                         removeTodolist={removeTodolist}
-                                        changeTodoListTitle={changeTodoListTitle}
+                                        changeTodoListTitle={onChangeTodoListTitle}
                                         demo={demo}
                                     />
                                 </Paper>

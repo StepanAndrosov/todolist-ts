@@ -1,4 +1,4 @@
-import {addTodoListAC, fetchTodolists, removeTodoList} from "./todo-reducer";
+import {addTodoList, fetchTodolists, removeTodoList} from "./todo-reducer";
 import {TaskModelType, TaskType, todolistsAPI} from "../../api/todolistsAPI";
 import {AppRootState} from "../../app/store";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
@@ -71,7 +71,7 @@ const slice = createSlice({
     initialState: initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(addTodoListAC, (state, action) => {
+        builder.addCase(addTodoList.fulfilled, (state, action) => {
             state[action.payload.todolist.id] = []
         })
         builder.addCase(fetchTodolists.fulfilled, (state, action) => {
