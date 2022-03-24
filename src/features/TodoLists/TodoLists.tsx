@@ -1,19 +1,17 @@
 import React, {useCallback, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootState} from "../../app/store";
+import {AppRootState, useActions} from "../../app/store";
 import {
-    addTodoList,
     changeTodoListFilterAC,
-    changeTodoListTitle,
-    fetchTodolists,
     FilterValuesType,
-    removeTodoList,
     TodolistDomainType
-} from "./todo-reducer";
+} from "./todolists-reducer";
 import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
 import {Todolist} from "./Todolist/Todolist";
 import {Grid, Paper} from "@mui/material";
 import {Navigate} from "react-router-dom";
+import {selectIsLoggedIn} from "../Auth/selectors";
+import {todoListsActions} from "./index";
 
 type PropsTodoListsType = {
     demo?: boolean
@@ -22,31 +20,29 @@ type PropsTodoListsType = {
 export const TodoLists: React.FC<PropsTodoListsType> = React.memo(({demo = false}) => {
     const dispatch = useDispatch()
     const todolists = useSelector<AppRootState, Array<TodolistDomainType>>(state => state.todolists)
-    const isLoggedIn = useSelector<AppRootState, boolean>(state => state.auth.isLoggedIn)
+    const isLoggedIn = useSelector(selectIsLoggedIn)
+    const {changeTodoListTitle, removeTodoList, addTodoList, fetchTodolists} = useActions(todoListsActions)
 
     useEffect(() => {
         if (demo || !isLoggedIn) {
             return
         }
-        dispatch(fetchTodolists())
-    }, [dispatch, demo, isLoggedIn])
+        fetchTodolists()
+    }, [ fetchTodolists, demo, isLoggedIn])
 
     const onChangeTodoListTitle = useCallback((id: string, newTitle: string) => {
-        const action = changeTodoListTitle({id, title: newTitle})
-        dispatch(action)
-    }, [dispatch])
+        changeTodoListTitle({id, title: newTitle})
+    }, [changeTodoListTitle])
     const changeFilter = useCallback((todoListId: string, value: FilterValuesType) => {
         const action = changeTodoListFilterAC({id: todoListId, filter: value})
         dispatch(action)
     }, [dispatch])
     const removeTodolist = useCallback((todoListId: string) => {
-        const action = removeTodoList(todoListId)
-        dispatch(action)
-    }, [dispatch])
+        removeTodoList(todoListId)
+    }, [removeTodoList])
     const addTodolist = useCallback((title: string) => {
-        const action = addTodoList(title)
-        dispatch(action)
-    }, [dispatch])
+        addTodoList(title)
+    }, [addTodoList])
     if (!isLoggedIn) {
         return <Navigate to="/login"/>
     }

@@ -1,5 +1,5 @@
 import {authAPI} from "../api/todolistsAPI";
-import {setIsLoggedInAC} from "../features/Login/auth-reducer";
+import {setIsLoggedInAC} from "../features/Auth/auth-reducer";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export const initializeApp = createAsyncThunk('app/initializeApp', async (param, {dispatch}) => {

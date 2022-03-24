@@ -2,14 +2,14 @@ import React, {useCallback, useEffect} from "react";
 import style from "./Todolist.module.css"
 import {AddItemForm} from "../../../components/AddItemForm/AddItemForm";
 import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootState} from "../../../app/store";
-import {addTask, fetchTasks} from "../tasks-reducer";
+import {useSelector} from "react-redux";
+import {AppRootState, useActions} from "../../../app/store";
 import {Task} from "./Task/Task";
-import {FilterValuesType, TodolistDomainType} from "../todo-reducer";
+import {FilterValuesType, TodolistDomainType} from "../todolists-reducer";
 import {TaskStatuses, TaskType} from "../../../api/todolistsAPI";
 import {Delete} from "@mui/icons-material";
 import {Button, IconButton, Stack} from "@mui/material";
+import {tasksActions} from "../index";
 
 type PropsTodoListType = {
     todolist: TodolistDomainType
@@ -27,15 +27,15 @@ export const Todolist = React.memo(({
                                         removeTodolist
                                     }: PropsTodoListType) => {
 
-    const dispatch = useDispatch()
     const tasks = useSelector<AppRootState, Array<TaskType>>(state => state.tasks[todolist.id])
+    const {addTask, fetchTasks} = useActions(tasksActions)
 
     useEffect(() => {
         if (demo) {
             return
         }
-        dispatch(fetchTasks(todolist.id))
-    }, [dispatch, todolist.id, demo])
+        fetchTasks(todolist.id)
+    }, [todolist.id, demo, fetchTasks])
 
     const onAllClickHandler = useCallback(() => changeFilter(todolist.id, "all"), [changeFilter, todolist.id])
     const onActiveClickHandler = useCallback(() => changeFilter(todolist.id, "active"), [changeFilter, todolist.id])
@@ -45,8 +45,8 @@ export const Todolist = React.memo(({
     }, [todolist.id, removeTodolist])
 
     const onAddTask = useCallback((title: string) => {
-        dispatch(addTask({todoListId:todolist.id, title}))
-    }, [dispatch, todolist.id])
+        addTask({todoListId: todolist.id, title})
+    }, [todolist.id, addTask])
 
     const onChangeTodoListTitleHandler = useCallback((newTitle: string) => {
         changeTodoListTitle(todolist.id, newTitle)

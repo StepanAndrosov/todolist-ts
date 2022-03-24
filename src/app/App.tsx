@@ -15,20 +15,21 @@ import {
 import {Menu} from "@mui/icons-material";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
 import {useDispatch, useSelector} from "react-redux";
-import {initializeApp, RequestStatusType} from "./app-reduser";
-import {AppRootState} from "./store";
+import {initializeApp} from "./app-reduser";
 import {Navigate, Route, Routes} from "react-router-dom";
-import {Login} from "../features/Login/Login";
-import {logout} from "../features/Login/auth-reducer";
+import {Login} from "../features/Auth/Login";
+import {logout} from "../features/Auth/auth-reducer";
+import {selectInitialized, selectStatus} from "./selectors";
+import {authSelectors} from "../features/Auth";
 
 type PropsAppType = {
     demo?: boolean
 }
 
 export const App: React.FC<PropsAppType> = React.memo(({demo = false}) => {
-    const status = useSelector<AppRootState, RequestStatusType>((state) => state.app.status)
-    const isInitialized = useSelector<AppRootState, boolean>(state => state.app.isInitialized)
-    const isLoggedIn = useSelector<AppRootState, boolean>(state => state.auth.isLoggedIn)
+    const status = useSelector(selectStatus)
+    const isInitialized = useSelector(selectInitialized)
+    const isLoggedIn = useSelector(authSelectors.selectIsLoggedIn)
     const dispatch = useDispatch()
 
     useEffect(() => {
