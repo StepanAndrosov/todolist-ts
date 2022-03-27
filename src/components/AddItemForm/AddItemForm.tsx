@@ -4,7 +4,7 @@ import {IconButton, TextField} from "@mui/material";
 import {Add} from "@mui/icons-material";
 
 type AddItemFormType = {
-    addItem: (title: string) => void
+    addItem: (title: string) => Promise<any>
     disabled?: boolean
 }
 export const AddItemForm = React.memo(({addItem, disabled = false}: AddItemFormType) => {
@@ -13,7 +13,7 @@ export const AddItemForm = React.memo(({addItem, disabled = false}: AddItemFormT
     const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setNewTaskTitle(e.currentTarget.value)
     }
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    const onKeyPressHandler = async (e: KeyboardEvent<HTMLInputElement>) => {
         if(error !== null) {
             setError(null)
         }
@@ -22,17 +22,22 @@ export const AddItemForm = React.memo(({addItem, disabled = false}: AddItemFormT
                 setError("Title is required")
                 return
             }
-            addItem(newTaskTitle.trim())
+            await addItem(newTaskTitle.trim())
             setNewTaskTitle("")
         }
     }
-    const addTask = () => {
+    const addTask = async () => {
         if (newTaskTitle.trim() === "") {
             setError("Title is required")
             return
         }
-        addItem(newTaskTitle.trim())
-        setNewTaskTitle("")
+        try {
+            await addItem(newTaskTitle.trim())
+            setNewTaskTitle("")
+        } catch (error: any) {
+            setError(error.message)
+        }
+
     }
     return <div className={style.AddItemForm}>
         <TextField error={!!error}

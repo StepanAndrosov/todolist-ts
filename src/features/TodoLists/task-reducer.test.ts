@@ -1,8 +1,10 @@
 import {tasksReducer, TaskStateType} from "./tasks-reducer";
 import {TaskPriorities, TaskStatuses, TaskType, TodolistType} from "../../api/todolistsAPI";
-import {addTask, fetchTasks, removeTask, updateTask} from "./tasks-actions";
-import {addTodoList, fetchTodolists, removeTodoList} from "./todolists-actions";
+import {todoListsActions} from "./index";
+import {tasksActions} from "./index";
 
+const {updateTask, removeTask, addTask, fetchTasks} = tasksActions
+const {addTodoList, fetchTodolists, removeTodoList} = todoListsActions
 const startState: TaskStateType = {
     "todolistId1": [
         {
@@ -112,7 +114,7 @@ test("add task should be work not immutability", () => {
         addedDate: ""
     }
     const todoListId = "todolistId1"
-    const action = addTask.fulfilled(task, 'requestId', {title: task.title, todoListId:task.todoListId})
+    const action = addTask.fulfilled(task, 'requestId', {title: task.title, todoListId: task.todoListId})
     const endState = tasksReducer(startState, action)
 
     expect(endState[todoListId].length).toBe(5)
@@ -131,7 +133,7 @@ test("change task status todolist should be work", () => {
         taskId: changeStatusTaskId,
         domainModel: {status: TaskStatuses.Completed}
     };
-    const action = updateTask.fulfilled( newVar, "requestId", newVar)
+    const action = updateTask.fulfilled(newVar, "requestId", newVar)
     const endState = tasksReducer(startState, action)
 
     expect(endState[todoListId][2].status).toBe(TaskStatuses.Completed)

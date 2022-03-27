@@ -1,0 +1,16 @@
+.TodoList {
+    max-width: 270px
+}
+.TodoTitle {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 15px;
+}
+.Tasks {
+    margin-top: 15px;
+}
+.isDone {
+color: #00000060
+}

@@ -13,34 +13,33 @@ type TaskPropsType = {
 }
 export const Task = React.memo(({task, todoListId}: TaskPropsType) => {
 
-
     const {removeTask, updateTask} = useActions(tasksActions)
 
-    const onRemoveHandler = useCallback(() => {
-        removeTask({todoListId, taskId: task.id})
-    }, [removeTask, task.id, todoListId])
+    const onRemoveHandler = useCallback(() => removeTask({
+        todoListId,
+        taskId: task.id
+    }), [removeTask, todoListId, task.id])
 
-    const onChangeStatus = useCallback((checked: boolean) => {
-        const status = checked ? TaskStatuses.Completed : TaskStatuses.New
+    const onChangeTitleHandler = useCallback((title: string) => updateTask({
+        todoListId,
+        taskId: task.id,
+        domainModel: {title}
+    }), [updateTask, todoListId, task.id])
+
+    const onChecked = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        const status = e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New
         updateTask({todoListId, taskId: task.id, domainModel: {status}})
-    }, [updateTask, task.id, todoListId])
+    }, [updateTask, todoListId, task.id])
 
-    const onChangeTitleHandler = useCallback((title: string) => {
-        updateTask({todoListId, taskId: task.id, domainModel: {title}})
-    }, [updateTask, task.id, todoListId])
-
-    const onChecked = (e: ChangeEvent<HTMLInputElement>) => {
-        onChangeStatus(e.currentTarget.checked)
-    }
     return (
-        <div key={task.id + task.title} className={task.status === TaskStatuses.Completed ? style.isDone : ""}>
+        <div key={task.id + task.title} className={task.status === TaskStatuses.Completed ? style.isDone : ""} style={{display: 'flex', alignItems: 'center', position: 'relative'}}>
             <Checkbox
                 checked={task.status === TaskStatuses.Completed}
                 onChange={onChecked}
             />
             <EditableSpan title={task.title} onChange={onChangeTitleHandler}/>
-            <IconButton onClick={onRemoveHandler} aria-label="delete" size={"small"}>
-                <Delete/>
+            <IconButton onClick={onRemoveHandler} aria-label="delete" size={"small"} style={{position: 'absolute', right: '5px'}}>
+                <Delete fontSize='small'/>
             </IconButton>
         </div>
     )

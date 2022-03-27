@@ -14,13 +14,15 @@ const Template: ComponentStory<typeof AddItemForm> = (args) => <AddItemForm {...
 
 export const AddItemFormBase = Template.bind({})
 
+const addTodoListAsync = async (title: string) => action( title)
+
 AddItemFormBase.args = {
-    addItem: action("Button clicked inside the form")
+    addItem: addTodoListAsync("Button clicked inside the form") as any
 }
 
 export const AddItemFormDisabled = Template.bind({})
 
 AddItemFormDisabled.args = {
-    addItem: action(""),
+    addItem: addTodoListAsync("") as any,
     disabled: true
 }
