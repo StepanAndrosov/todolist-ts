@@ -1,12 +1,15 @@
-import {setAppStatus} from "../../app/app-reduser";
-import {authAPI, FieldErrorType, LoginParamsType} from "../../api/todolistsAPI";
-import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
+import {authAPI, LoginParamsType} from "../../api/todolistsAPI";
+import {
+    handleAsyncServerAppError,
+    handleAsyncServerNetworkError,
+} from "../../utils/error-utils";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {AxiosError} from "axios";
+import {setAppStatus} from "../Application/ApplicationCommonAction";
+import {ThunkError} from "../Application/types";
 
-const login = createAsyncThunk<undefined, LoginParamsType, {
-    rejectValue: { errors: Array<string>, fieldsErrors?: Array<FieldErrorType> }
-}>('auth/login', async (param, thunkAPI) => {
+
+
+const login = createAsyncThunk<undefined, LoginParamsType, ThunkError>('auth/login', async (param, thunkAPI) => {
     thunkAPI.dispatch(setAppStatus({status: 'loading'}))
     try {
         const res = await authAPI.login(param)
@@ -14,13 +17,10 @@ const login = createAsyncThunk<undefined, LoginParamsType, {
             thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
             return
         } else {
-            handleServerAppError(res.data, thunkAPI.dispatch)
-            return thunkAPI.rejectWithValue({errors: res.data.messages, fieldsErrors: res.data.fieldsErrors})
+            return handleAsyncServerAppError(res.data, thunkAPI, false)
         }
     } catch (error: any) {
-        const err: AxiosError = error
-        handleServerNetworkError(err.message ? err.message : 'some error occurred', thunkAPI.dispatch)
-        return thunkAPI.rejectWithValue({errors: ['some error']})
+        return handleAsyncServerNetworkError(error, thunkAPI, false)
     }
 })
 const logout = createAsyncThunk('auth/logout', async (param, thunkAPI) => {
@@ -31,12 +31,10 @@ const logout = createAsyncThunk('auth/logout', async (param, thunkAPI) => {
             thunkAPI.dispatch(setAppStatus({status: 'succeeded'}))
             return
         } else {
-            handleServerAppError(res.data, thunkAPI.dispatch)
-            return thunkAPI.rejectWithValue({})
+            return handleAsyncServerAppError(res.data, thunkAPI, false)
         }
     } catch (error: any) {
-        handleServerNetworkError(error.message ? error.message : 'some error occurred', thunkAPI.dispatch)
-        return thunkAPI.rejectWithValue({})
+        return handleAsyncServerNetworkError(error, thunkAPI, false)
     }
 })
 
@@ -64,8 +62,7 @@ export const slice = createSlice({
         })
     }
 })
-export const authReducer = slice.reducer
-export const {setIsLoggedIn} = slice.actions
+
 
 
 

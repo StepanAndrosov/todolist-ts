@@ -3,41 +3,41 @@ import style from "./AddItemForm.module.css"
 import {IconButton, TextField} from "@mui/material";
 import {Add} from "@mui/icons-material";
 
+export type AddItemFormSubmitHelperType = { setError: (error: string) => void, setTitle: (title: string) => void }
 type AddItemFormType = {
-    addItem: (title: string) => Promise<any>
+    addItem: (title: string, helper: AddItemFormSubmitHelperType) => void
     disabled?: boolean
 }
 export const AddItemForm = React.memo(({addItem, disabled = false}: AddItemFormType) => {
-    const [newTaskTitle, setNewTaskTitle] = useState("")
+    const [title, setTitle] = useState("")
     const [error, setError] = useState<string | null>(null)
     const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setNewTaskTitle(e.currentTarget.value)
+        setTitle(e.currentTarget.value)
     }
-    const onKeyPressHandler = async (e: KeyboardEvent<HTMLInputElement>) => {
-        if(error !== null) {
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (error !== null) {
             setError(null)
         }
         if (e.key === "Enter") {
-            if (newTaskTitle.trim() === "") {
+            if (title.trim() === "") {
                 setError("Title is required")
                 return
             }
-            await addItem(newTaskTitle.trim())
-            setNewTaskTitle("")
+            addItem(title.trim(), {setError, setTitle})
+            setTitle("")
         }
     }
     const addTask = async () => {
-        if (newTaskTitle.trim() === "") {
+        if (title.trim() === "") {
             setError("Title is required")
             return
         }
         try {
-            await addItem(newTaskTitle.trim())
-            setNewTaskTitle("")
+            await addItem(title.trim(), {setError, setTitle})
+            setTitle("")
         } catch (error: any) {
             setError(error.message)
         }
-
     }
     return <div className={style.AddItemForm}>
         <TextField error={!!error}
@@ -45,12 +45,12 @@ export const AddItemForm = React.memo(({addItem, disabled = false}: AddItemFormT
                    helperText={error}
                    label={"type value"}
                    variant={"outlined"}
-                   value={newTaskTitle}
+                   value={title}
                    onChange={onNewTitleChangeHandler}
                    onKeyPress={onKeyPressHandler}
         />
         <IconButton size={"small"} onClick={addTask} color={"primary"} disabled={disabled}>
-            <Add />
+            <Add/>
         </IconButton>
     </div>
 })

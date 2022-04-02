@@ -1,8 +1,8 @@
-import { FilterValuesType, TodolistDomainType, todolistsReducer} from "./todolists-reducer";
 import {v1} from "uuid";
 import {TodolistType} from "../../api/todolistsAPI";
-import {RequestStatusType} from "../../app/app-reduser";
-import {todoListsActions} from './index'
+import {RequestStatusType} from "../Application";
+import {todoListsActions, todolistsReducer} from './index'
+import {FilterValuesType, TodolistDomainType} from "./types";
 
 const {fetchTodolists, removeTodoList, addTodoList, changeTodoListTitle, changeTodoListFilter, changeTodolistEntityStatus} = todoListsActions
 

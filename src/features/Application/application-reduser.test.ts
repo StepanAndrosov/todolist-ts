@@ -1,11 +1,7 @@
-import {
-    appReducer,
-    ErrorType,
-    RequestStatusType,
-    setAppError,
-    asyncActions,
-    setAppStatus
-} from "./app-reduser";
+import {ErrorType, RequestStatusType} from "./types";
+import {setAppError, setAppStatus} from "./ApplicationCommonAction";
+import {appReducer} from "./index";
+
 
 type InitialType = {
     status: RequestStatusType,

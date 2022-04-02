@@ -1,16 +1,18 @@
 import React, {useCallback, useEffect} from "react";
-import style from "./Todolist.module.css"
-import {AddItemForm} from "../../../components/AddItemForm/AddItemForm";
-import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
 import {useSelector} from "react-redux";
-import {AppRootState, useActions, useAppDispatch} from "../../../app/store";
-import {Task} from "./Task/Task";
-import {FilterValuesType, TodolistDomainType} from "../todolists-reducer";
-import {TaskStatuses, TaskType} from "../../../api/todolistsAPI";
 import {Delete} from "@mui/icons-material";
-import {Button, IconButton, Stack} from "@mui/material";
-import {tasksActions, todoListsActions} from "../index";
 import {OverridableStringUnion} from "@mui/types";
+import {Button, IconButton, Stack} from "@mui/material";
+import style from "./Todolist.module.css"
+import {AddItemForm, AddItemFormSubmitHelperType} from "../../../components/AddItemForm/AddItemForm";
+import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
+import {Task} from "./Task/Task";
+import {TaskStatuses, TaskType} from "../../../api/todolistsAPI";
+import {tasksActions} from "../index";
+import {useActions, useAppDispatch} from "../../../utils/redux-utils";
+import {AppRootState} from "../../Application/types";
+import {FilterValuesType, TodolistDomainType} from "../types";
+import {todoListsActions} from "../todolists-reducer";
 
 type PropsTodoListType = {
     todolist: TodolistDomainType
@@ -23,6 +25,7 @@ export const Todolist = React.memo(({
                                     }: PropsTodoListType) => {
     const tasks = useSelector<AppRootState, Array<TaskType>>(state => state.tasks[todolist.id])
     const {fetchTasks} = useActions(tasksActions)
+
     const {changeTodoListFilter, removeTodoList, changeTodoListTitle} = useActions(todoListsActions)
 
     const dispatch = useAppDispatch()
@@ -39,17 +42,19 @@ export const Todolist = React.memo(({
     const removeTodo = useCallback(() => removeTodoList(todolist.id),
         [todolist.id, removeTodoList])
 
-    const onAddTask = useCallback(async (title: string) => {
+    const onAddTaskAsync = useCallback(async (title: string, helper: AddItemFormSubmitHelperType) => {
         const thunk = tasksActions.addTask({todoListId: todolist.id, title})
         const res = await dispatch(thunk)
 
         if (tasksActions.addTask.rejected.match(res)) {
             if (res.payload?.errors?.length) {
                 const errorMessage = res.payload?.errors[0]
-                throw new Error(errorMessage)
+                helper.setError(errorMessage)
             } else {
-                throw  new Error("Some error occurred")
+                helper.setError("Some error occurred")
             }
+        } else {
+            helper.setTitle('')
         }
     }, [todolist.id, dispatch])
 
@@ -91,7 +96,7 @@ export const Todolist = React.memo(({
                 <Delete/>
             </IconButton>
         </div>
-        <AddItemForm addItem={onAddTask} disabled={todolist.entityStatus === 'loading'}/>
+        <AddItemForm addItem={onAddTaskAsync} disabled={todolist.entityStatus === 'loading'}/>
         <div className={style.Tasks}>
             {taskForToDoList.map(t => {
                     return (

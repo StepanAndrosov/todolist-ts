@@ -1,7 +1,6 @@
-import { TodolistDomainType, todolistsReducer} from "./todolists-reducer";
-import {tasksReducer, TaskStateType} from "./tasks-reducer";
 import {TodolistType} from "../../api/todolistsAPI";
-import {todoListsActions} from './index'
+import {todoListsActions, todolistsReducer, tasksReducer} from './index'
+import {TaskStateType, TodolistDomainType} from "./types";
 
 
 test('ids should be equals', () => {

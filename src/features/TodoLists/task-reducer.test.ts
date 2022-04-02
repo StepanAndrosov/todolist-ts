@@ -1,7 +1,7 @@
-import {tasksReducer, TaskStateType} from "./tasks-reducer";
 import {TaskPriorities, TaskStatuses, TaskType, TodolistType} from "../../api/todolistsAPI";
 import {todoListsActions} from "./index";
-import {tasksActions} from "./index";
+import {tasksActions, tasksReducer} from "./index";
+import {TaskStateType} from "./types";
 
 const {updateTask, removeTask, addTask, fetchTasks} = tasksActions
 const {addTodoList, fetchTodolists, removeTodoList} = todoListsActions
@@ -189,7 +189,7 @@ test("empty arrays should be added when we set todolists", () => {
             {id: "todolistId2", title: "what to buy?", addedDate: '', order: 0}
         ]
     };
-    const action = fetchTodolists.fulfilled(payload, 'requestId')
+    const action = fetchTodolists.fulfilled(payload, 'requestId', undefined)
     const endState = tasksReducer({}, action)
     const keys = Object.keys(endState)
     expect(keys.length).toBe(2)

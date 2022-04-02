@@ -9,11 +9,11 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {FormikHelpers, useFormik} from "formik";
 import {useSelector} from "react-redux";
-import { useAppDispatch} from "../../app/store";
 import {Navigate} from "react-router-dom";
 import {Paper} from "@mui/material";
 import {selectIsLoggedIn} from "./selectors";
-import {authActions} from "./index";
+import {authActions} from "./";
+import {useAppDispatch} from "../../utils/redux-utils";
 
 type FormValuesType = {
     email: string

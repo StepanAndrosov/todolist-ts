@@ -1,13 +1,14 @@
 import React, {useCallback, useEffect} from "react";
 import {useSelector} from "react-redux";
-import {AppRootState, useActions} from "../../app/store";
-import {TodolistDomainType} from "./todolists-reducer";
-import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
-import {Todolist} from "./Todolist/Todolist";
+import {AddItemForm, AddItemFormSubmitHelperType} from "../../components/AddItemForm/AddItemForm";
 import {Grid, Paper} from "@mui/material";
 import {Navigate} from "react-router-dom";
 import {selectIsLoggedIn} from "../Auth/selectors";
-import {todoListsActions} from "./index";
+import { Todolist } from "./Todolist/Todolist";
+import {useActions, useAppDispatch} from "../../utils/redux-utils";
+import {AppRootState} from "../Application/types";
+import {TodolistDomainType} from "./types";
+import {todoListsActions} from "./todolists-reducer";
 
 type PropsTodoListsType = {
     demo?: boolean
@@ -16,10 +17,23 @@ type PropsTodoListsType = {
 export const TodoLists: React.FC<PropsTodoListsType> = React.memo(({demo = false}) => {
     const todolists = useSelector<AppRootState, Array<TodolistDomainType>>(state => state.todolists)
     const isLoggedIn = useSelector(selectIsLoggedIn)
-    const {addTodoList, fetchTodolists} = useActions(todoListsActions)
+    const {fetchTodolists} = useActions(todoListsActions)
+    const dispatch = useAppDispatch()
 
-    const addTodoListAsync = useCallback(async (title: string) => addTodoList( title),
-        [ addTodoList])
+    const addTodoListAsync = useCallback(async (title: string, helper: AddItemFormSubmitHelperType) => {
+            const thunk = todoListsActions.addTodoList(title)
+            const res = await dispatch(thunk)
+            if (todoListsActions.addTodoList.rejected.match(res)) {
+                if (res.payload?.errors?.length) {
+                    const errorMessage = res.payload?.errors[0]
+                    helper.setError(errorMessage)
+                } else {
+                    helper.setError("Some error occurred")
+                }
+            } else {
+                helper.setTitle('')
+            }
+        }, [dispatch])
 
     useEffect(() => {
         if (demo || !isLoggedIn) {

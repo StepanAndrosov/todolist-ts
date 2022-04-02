@@ -4,7 +4,7 @@ import {BrowserRouterDecorator, ReduxStoreDecorator} from "../stories/decorators
 import {Meta} from "@storybook/react";
 
 export default {
-    title: "Todolist/App",
+    title: "Todolist/Application",
     component: App,
     decorators: [ReduxStoreDecorator, BrowserRouterDecorator]
 } as Meta

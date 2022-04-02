@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect} from 'react';
 import './App.css';
-import {TodoLists} from "../features/TodoLists";
 import {
     AppBar,
     Box,
@@ -14,12 +13,13 @@ import {
 } from "@mui/material";
 import {Menu} from "@mui/icons-material";
 import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
-import {useDispatch, useSelector} from "react-redux";
-import {asyncActions} from "./app-reduser";
+import {useSelector} from "react-redux";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {Login, authActions, authSelectors} from "../features/Auth";
 import {selectInitialized, selectStatus} from "./selectors";
-import {useActions} from "./store";
+import {useActions} from "../utils/redux-utils";
+import {appActions} from "../features/Application";
+import {TodoLists} from "../features/TodoLists/TodoLists";
 
 type PropsAppType = {
     demo?: boolean
@@ -29,14 +29,14 @@ export const App: React.FC<PropsAppType> = React.memo(({demo = false}) => {
     const status = useSelector(selectStatus)
     const isInitialized = useSelector(selectInitialized)
     const isLoggedIn = useSelector(authSelectors.selectIsLoggedIn)
-    const dispatch = useDispatch()
     const {logout} = useActions(authActions)
+    const {initializeApp} = useActions(appActions)
 
     useEffect(() => {
         if (!demo) {
-            dispatch(asyncActions.initializeApp())
+            initializeApp()
         }
-    }, [dispatch, demo])
+    }, [initializeApp, demo])
 
     const logoutHandler = useCallback(() => {
         logout()
