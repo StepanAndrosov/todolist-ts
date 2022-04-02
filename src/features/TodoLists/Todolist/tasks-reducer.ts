@@ -1,10 +1,10 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {TaskModelType, TaskType, todolistsAPI} from "../../api/todolistsAPI";
-import {AppRootState, ThunkError} from "../Application/types";
-import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "../../utils/error-utils";
-import {setAppStatus} from "../Application/ApplicationCommonAction";
-import {TaskStateType, UpdateTaskModelType} from "./types";
-import {todoListsActions} from './todolists-index'
+import {TaskModelType, TaskType, todolistsAPI} from "../../../api/todolistsAPI";
+import {AppRootState, ThunkError} from "../../Application/types";
+import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "../../../utils/error-utils";
+import {setAppStatus} from "../../Application/ApplicationCommonAction";
+import {TaskStateType, UpdateTaskModelType} from "../types";
+import {todoListsActions} from '../index'
 
 const {addTodoList, fetchTodolists, removeTodoList} = todoListsActions
 const initialState: TaskStateType = {}

@@ -8,19 +8,17 @@ import {AddItemForm, AddItemFormSubmitHelperType} from "../../../components/AddI
 import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
 import {Task} from "./Task/Task";
 import {TaskStatuses, TaskType} from "../../../api/todolistsAPI";
-import {tasksActions} from "../index";
+import {tasksActions} from "./index";
 import {useActions, useAppDispatch} from "../../../utils/redux-utils";
 import {AppRootState} from "../../Application/types";
 import {FilterValuesType, TodolistDomainType} from "../types";
-import {todoListsActions} from "../todolists-index";
+import {todoListsActions} from "../index";
 
 type PropsTodoListType = {
     todolist: TodolistDomainType
-    demo?: boolean
 }
 
 export const Todolist = React.memo(({
-                                        demo = false,
                                         todolist,
                                     }: PropsTodoListType) => {
     const tasks = useSelector<AppRootState, Array<TaskType>>(state => state.tasks[todolist.id])
@@ -30,11 +28,11 @@ export const Todolist = React.memo(({
 
     const dispatch = useAppDispatch()
     useEffect(() => {
-        if (demo) {
-            return
+        if (!tasks.length) {
+            fetchTasks(todolist.id)
         }
-        fetchTasks(todolist.id)
-    }, [todolist.id, demo, fetchTasks])
+
+    }, [todolist.id, fetchTasks, tasks.length])
 
     const onFilterClickBtn = useCallback((filter: FilterValuesType) => changeTodoListFilter({id: todolist.id, filter}),
         [changeTodoListFilter, todolist.id])

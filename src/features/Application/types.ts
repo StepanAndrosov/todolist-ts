@@ -1,5 +1,6 @@
-import {rootReducer, store} from "../../app/store";
+import {store} from "../../app/store";
 import {FieldErrorType} from "../../api/todolistsAPI";
+import {rootReducer} from "../../app/reducers";
 
 export type AppDispatchType = typeof store.dispatch
 export type ThunkError = { rejectValue: { errors: Array<string>, fieldsErrors?: Array<FieldErrorType> } }

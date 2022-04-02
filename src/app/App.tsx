@@ -21,11 +21,8 @@ import {useActions} from "../utils/redux-utils";
 import {appActions} from "../features/Application";
 import {TodoLists} from "../features/TodoLists/TodoLists";
 
-type PropsAppType = {
-    demo?: boolean
-}
 
-export const App: React.FC<PropsAppType> = React.memo(({demo = false}) => {
+export const App: React.FC = React.memo(() => {
     const status = useSelector(selectStatus)
     const isInitialized = useSelector(selectInitialized)
     const isLoggedIn = useSelector(authSelectors.selectIsLoggedIn)
@@ -33,10 +30,11 @@ export const App: React.FC<PropsAppType> = React.memo(({demo = false}) => {
     const {initializeApp} = useActions(appActions)
 
     useEffect(() => {
-        if (!demo) {
+        if(!isInitialized) {
             initializeApp()
         }
-    }, [initializeApp, demo])
+
+    }, [initializeApp, isInitialized])
 
     const logoutHandler = useCallback(() => {
         logout()
@@ -64,7 +62,7 @@ export const App: React.FC<PropsAppType> = React.memo(({demo = false}) => {
                             <IconButton edge={"start"} color={"inherit"} aria-label={"menu"}>
                                 <Menu/>
                             </IconButton>
-                            <Typography variant={"h6"} component={"div"}>
+                            <Typography variant={"h6"} component={"div"} >
                                 News
                             </Typography>
                         </Box>
@@ -80,7 +78,7 @@ export const App: React.FC<PropsAppType> = React.memo(({demo = false}) => {
             </AppBar>
             <Container fixed>
                 <Routes>
-                    <Route path="/" element={<TodoLists demo={demo}/>}/>
+                    <Route path="/" element={<TodoLists />}/>
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/404" element={<h1>404: PAGE NOT FOUND</h1>}/>
                     <Route path="*" element={<Navigate to={"/404"}/>}/>

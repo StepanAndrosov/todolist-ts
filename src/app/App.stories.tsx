@@ -10,7 +10,7 @@ export default {
 } as Meta
 
 export const AppStories = () => {
-    return <App demo={true}  />
+    return <App />
 }
 
 

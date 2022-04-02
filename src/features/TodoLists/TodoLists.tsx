@@ -8,13 +8,10 @@ import { Todolist } from "./Todolist/Todolist";
 import {useActions, useAppDispatch} from "../../utils/redux-utils";
 import {AppRootState} from "../Application/types";
 import {TodolistDomainType} from "./types";
-import {todoListsActions} from "./todolists-index";
+import {todoListsActions} from "./index";
 
-type PropsTodoListsType = {
-    demo?: boolean
-}
 
-export const TodoLists: React.FC<PropsTodoListsType> = React.memo(({demo = false}) => {
+export const TodoLists: React.FC = React.memo(() => {
     const todolists = useSelector<AppRootState, Array<TodolistDomainType>>(state => state.todolists)
     const isLoggedIn = useSelector(selectIsLoggedIn)
     const {fetchTodolists} = useActions(todoListsActions)
@@ -36,11 +33,14 @@ export const TodoLists: React.FC<PropsTodoListsType> = React.memo(({demo = false
         }, [dispatch])
 
     useEffect(() => {
-        if (demo || !isLoggedIn) {
+        if ( !isLoggedIn) {
             return
         }
-        fetchTodolists()
-    }, [fetchTodolists, demo, isLoggedIn])
+        if(!todolists.length) {
+            fetchTodolists()
+        }
+
+    }, [fetchTodolists, isLoggedIn, todolists.length])
 
     if (!isLoggedIn) {
         return <Navigate to="/login"/>
@@ -62,7 +62,6 @@ export const TodoLists: React.FC<PropsTodoListsType> = React.memo(({demo = false
                                     <Todolist
                                         todolist={tl}
                                         key={tl.id}
-                                        demo={demo}
                                     />
                                 </Paper>
                             </Grid>
