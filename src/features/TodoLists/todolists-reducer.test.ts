@@ -1,8 +1,8 @@
 import {v1} from "uuid";
 import {TodolistType} from "../../api/todolistsAPI";
-import {RequestStatusType} from "../Application";
-import {todoListsActions, todolistsReducer} from './index'
 import {FilterValuesType, TodolistDomainType} from "./types";
+import {todoListsActions, todolistsReducer} from "./todolists-index";
+import {RequestStatusType} from "../Application/types";
 
 const {fetchTodolists, removeTodoList, addTodoList, changeTodoListTitle, changeTodoListFilter, changeTodolistEntityStatus} = todoListsActions
 
@@ -52,7 +52,7 @@ test("todolists should be added to the state", () => {
         {id: todolistId2, title: "what to buy?", addedDate: '', order: 0}
     ]
     const updateObj = {todolists: getterState};
-    const action = fetchTodolists.fulfilled(updateObj, 'requestId')
+    const action = fetchTodolists.fulfilled(updateObj, 'requestId', undefined)
     const endState = todolistsReducer([], action)
     expect(endState.length).toBe(2)
     expect(endState[0].filter).toBe('all')

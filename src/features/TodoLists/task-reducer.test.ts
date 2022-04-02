@@ -1,7 +1,7 @@
 import {TaskPriorities, TaskStatuses, TaskType, TodolistType} from "../../api/todolistsAPI";
-import {todoListsActions} from "./index";
 import {tasksActions, tasksReducer} from "./index";
 import {TaskStateType} from "./types";
+import {todoListsActions} from "./todolists-index";
 
 const {updateTask, removeTask, addTask, fetchTasks} = tasksActions
 const {addTodoList, fetchTodolists, removeTodoList} = todoListsActions
