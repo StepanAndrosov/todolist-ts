@@ -8,7 +8,7 @@ import { Todolist } from "./Todolist/Todolist";
 import {useActions, useAppDispatch} from "../../utils/redux-utils";
 import {AppRootState} from "../Application/types";
 import {TodolistDomainType} from "./types";
-import {todoListsActions} from "./todolists-reducer";
+import {todoListsActions} from "./todolists-index";
 
 type PropsTodoListsType = {
     demo?: boolean

@@ -12,7 +12,7 @@ import {tasksActions} from "../index";
 import {useActions, useAppDispatch} from "../../../utils/redux-utils";
 import {AppRootState} from "../../Application/types";
 import {FilterValuesType, TodolistDomainType} from "../types";
-import {todoListsActions} from "../todolists-reducer";
+import {todoListsActions} from "../todolists-index";
 
 type PropsTodoListType = {
     todolist: TodolistDomainType

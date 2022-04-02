@@ -4,8 +4,9 @@ import {AppRootState, ThunkError} from "../Application/types";
 import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "../../utils/error-utils";
 import {setAppStatus} from "../Application/ApplicationCommonAction";
 import {TaskStateType, UpdateTaskModelType} from "./types";
-import {addTodoList, fetchTodolists, removeTodoList} from "./todolists-reducer";
+import {todoListsActions} from './todolists-index'
 
+const {addTodoList, fetchTodolists, removeTodoList} = todoListsActions
 const initialState: TaskStateType = {}
 
 const fetchTasks = createAsyncThunk<{todoListId: string, tasks: TaskType[]}, string, ThunkError>('tasks/fetchTasks', async (todoListId, thunkAPI) => {

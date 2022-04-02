@@ -11,7 +11,7 @@ import {configureStore} from "@reduxjs/toolkit";
 import {HashRouter} from "react-router-dom";
 import {AppRootState, RootReducerType} from "../../features/Application/types";
 import {appReducer} from "../../features/Application";
-import {todolistsReducer} from "../../features/TodoLists/todolists-reducer";
+import {todolistsReducer} from "../../features/TodoLists/todolists-index";
 
 const rootReducer: RootReducerType = combineReducers({
     todolists: todolistsReducer,
